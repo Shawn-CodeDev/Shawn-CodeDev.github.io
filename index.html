@@ -1,1147 +1,1157 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gary</title>
-    
-    <!-- 字体和图标库 - 增加了Syncopate字体 -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&family=Syncopate:wght@400;700&family=Audiowide&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+import React, { useEffect, useMemo, useRef } from "react";
 
-        :root {
-            --neon-pink: #ff006e;
-            --neon-cyan: #00f5ff;
-            --neon-purple: #8b00ff;
-            --neon-yellow: #ffea00;
-            --dark-bg: #0a0a0a;
-            --darker-bg: #050505;
-            --glow-cyan: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 30px #00f5ff;
-            --glow-pink: 0 0 10px #ff006e, 0 0 20px #ff006e, 0 0 30px #ff006e;
-            --glow-purple: 0 0 10px #8b00ff, 0 0 20px #8b00ff, 0 0 30px #8b00ff;
-        }
+const navItems = [
+  { label: "About", href: "#about" },
+  { label: "Research", href: "#research" },
+  { label: "Papers", href: "#papers" },
+  { label: "Contact", href: "#contact" },
+];
 
-        body {
-            font-family: 'Exo 2', sans-serif;
-            background: var(--darker-bg);
-            color: #fff;
-            overflow-x: hidden;
-            cursor: none;
-        }
+const skills = [
+  "Diffusion Models",
+  "Multimodal Large Models",
+  "Noise Optimization",
+  "Text-to-Content Generation",
+  "Style Transfer",
+  "Hyperspectral Imaging",
+  "Efficient Inference",
+  "AI Art",
+];
 
-        /* 自定义光标 */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--neon-cyan);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            transition: transform 0.1s;
-            z-index: 9999;
-            mix-blend-mode: difference;
-        }
+const stats = [
+  ["3", "", "Featured Papers"],
+  ["4", "", "Research Directions"],
+  ["2025", "", "Active Research"],
+  ["∞", "", "Noise to Order"],
+];
 
-        .cursor-follower {
-            width: 40px;
-            height: 40px;
-            background: rgba(0, 245, 255, 0.1);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            transition: transform 0.3s;
-            z-index: 9998;
-        }
+const researchAreas = [
+  {
+    num: "01",
+    title: "Diffusion 扩散模型",
+    body: "Conduct an in-depth study of the mathematical principles of diffusion processes, explore more efficient sampling algorithms and noise scheduling strategies, and strive to reduce diffusion time from infinity to the millisecond level. 深入研究扩散过程的数学原理，探索更高效的采样算法和噪声调度策略。",
+    tag: "Generation / Sampling",
+  },
+  {
+    num: "02",
+    title: "MLLMs 多模态融合",
+    body: "Construct a unified representation space that enables free modality conversion in latent space, achieving true cross-modal understanding and generation. 构建统一的表示空间，让模态在潜空间中自由转换。",
+    tag: "Text / Image / Video / 3D",
+  },
+  {
+    num: "03",
+    title: "Efficiency 高效推理",
+    body: "Through compression, quantization, and distillation, bring large models to edge devices—making AI more ubiquitous and practical. 通过模型压缩、量化和蒸馏，让大模型在边缘设备上运行。",
+    tag: "Compression / Distillation",
+  },
+  {
+    num: "04",
+    title: "AI Art AI艺术",
+    body: "Treat algorithms as brushes and noise as pigment; probe the resonance between machine creativity and human aesthetics. 将算法视为画笔，噪声视为颜料，探索机器创造力与人类审美的共鸣。",
+    tag: "Creativity / Aesthetics",
+  },
+];
 
-        /* 扫描线效果 */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                rgba(0, 245, 255, 0.03) 50%,
-                transparent 50%
-            );
-            background-size: 100% 4px;
-            z-index: 1000;
-            pointer-events: none;
-            animation: scanlines 8s linear infinite;
-        }
+const papers = [
+  {
+    num: "01",
+    title: "Beyond Randomness: Understand the Order of the Noise in Diffusion",
+    meta: "2025.11 · Gary, et al. · Under Review",
+    abstract:
+      "This work challenges the conventional view that initial noise in text-driven diffusion generation is merely random. It reveals analyzable semantic patterns in noise and proposes a training-free Semantic Erasure-Injection process for modulating initial noise in text-to-content diffusion models.",
+    tags: ["Diffusion", "Noise Optimization", "Training-free"],
+    color: "#1a0e00",
+    accent: "#c9a96e",
+    preview: "Noise → Order",
+  },
+  {
+    num: "02",
+    title: "Break Stylistic Sophon: Are We Really Meant to Confine the Imagination in Style Transfer?",
+    meta: "2025.05 · Gary, et al. · Under Review",
+    abstract:
+      "This work introduces StyleWallfacer, a unified training and inference framework for high-quality style transfer and text-driven stylization. It addresses semantic drift, overfitting, color limitation, and reference-image constraints through semantic style injection and triple diffusion.",
+    tags: ["AI Art", "Style Transfer", "Diffusion"],
+    color: "#0a001a",
+    accent: "#a78bfa",
+    preview: "StyleWallfacer",
+  },
+  {
+    num: "03",
+    title: "SHSRD: Efficient Conditional Diffusion Model for Single Hyperspectral Image Superresolution",
+    meta: "2025.03 · Gary, et al. · JSTARS 2025",
+    abstract:
+      "This paper proposes SHSRD, an efficient conditional diffusion framework for single hyperspectral image superresolution. It uses spectral information injection and two-stage transfer learning to improve generalization on small HSI datasets.",
+    tags: ["Diffusion", "HSI", "Low-Level Vision"],
+    color: "#001a14",
+    accent: "#34d399",
+    preview: "SHSRD",
+  },
+];
 
-        @keyframes scanlines {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(10px); }
-        }
+const marqueeA = [
+  "Diffusion Models",
+  "MLLMs",
+  "Noise Optimization",
+  "Text · Image · Video · 3D",
+  "AI Art",
+  "Efficient Inference",
+];
 
-        /* 导航栏 */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 20px 50px;
-            background: rgba(10, 10, 10, 0.9);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            border-bottom: 1px solid var(--neon-cyan);
-            box-shadow: var(--glow-cyan);
-        }
+const marqueeB = ["USTC", "JSTARS 2025", "Under Review", "Training-free", "Style Transfer", "Hyperspectral SR"];
 
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+function cx(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
-        .logo {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--neon-cyan);
-            text-shadow: var(--glow-cyan);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
+function usePortfolioInteractions() {
+  const previewRef = useRef(null);
+  const previewInnerRef = useRef(null);
 
+  useEffect(() => {
+    const root = document.querySelector(".gary-award-page");
+    const dot = document.querySelector(".cursor-dot");
+    const ring = document.querySelector(".cursor-ring");
+    const nav = document.querySelector(".site-nav");
+    const reveals = Array.from(document.querySelectorAll(".reveal"));
+    const paperItems = Array.from(document.querySelectorAll(".paper-row"));
+
+    if (!root || !dot || !ring || !nav) return undefined;
+
+    let mx = window.innerWidth / 2;
+    let my = window.innerHeight / 2;
+    let rx = mx;
+    let ry = my;
+    let rafId = 0;
+
+    const onMouseMove = (event) => {
+      mx = event.clientX;
+      my = event.clientY;
+    };
+
+    const animateCursor = () => {
+      dot.style.left = `${mx}px`;
+      dot.style.top = `${my}px`;
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = `${rx}px`;
+      ring.style.top = `${ry}px`;
+      rafId = window.requestAnimationFrame(animateCursor);
+    };
+
+    const hoverTargets = Array.from(document.querySelectorAll("a, button, .paper-row, .research-card, .contact-card"));
+    const addHover = () => root.classList.add("cursor-hover");
+    const removeHover = () => root.classList.remove("cursor-hover");
+    hoverTargets.forEach((el) => {
+      el.addEventListener("mouseenter", addHover);
+      el.addEventListener("mouseleave", removeHover);
+    });
+
+    const onScroll = () => {
+      nav.classList.toggle("scrolled", window.scrollY > 60);
+      const heroName = document.querySelector(".hero-name");
+      const heroYear = document.querySelector(".hero-year");
+      const matrix = document.querySelector(".signal-matrix");
+      if (heroName) heroName.style.transform = `translateY(${window.scrollY * 0.18}px)`;
+      if (heroYear) heroYear.style.transform = `translateY(${window.scrollY * 0.09}px)`;
+      if (matrix) matrix.style.transform = `translateY(${window.scrollY * 0.12}px)`;
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    reveals.forEach((el) => observer.observe(el));
+
+    const onPaperEnter = (event) => {
+      const target = event.currentTarget;
+      const preview = previewRef.current;
+      const previewInner = previewInnerRef.current;
+      if (!preview || !previewInner) return;
+      preview.classList.add("active");
+      previewInner.style.background = target.dataset.color || "#1a0e00";
+      previewInner.style.color = target.dataset.accent || "#c9a96e";
+      previewInner.textContent = target.dataset.preview || target.querySelector(".paper-title")?.textContent || "Gary";
+    };
+
+    const onPaperMove = (event) => {
+      const preview = previewRef.current;
+      if (!preview) return;
+      preview.style.left = `${event.clientX + 22}px`;
+      preview.style.top = `${event.clientY - 90}px`;
+    };
+
+    const onPaperLeave = () => {
+      previewRef.current?.classList.remove("active");
+    };
+
+    paperItems.forEach((item) => {
+      item.addEventListener("mouseenter", onPaperEnter);
+      item.addEventListener("mousemove", onPaperMove);
+      item.addEventListener("mouseleave", onPaperLeave);
+    });
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    animateCursor();
+    onScroll();
+
+    console.assert(navItems.every((item) => document.querySelector(item.href)), "Every navigation item must target an existing section.");
+    console.assert(papers.length >= 3, "The papers section should include at least three papers from the previous homepage.");
+    console.assert(researchAreas.length === 4, "The research section is expected to contain four research areas.");
+    console.assert(skills.length % 2 === 0, "The skills grid is designed for paired rows.");
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("scroll", onScroll);
+      hoverTargets.forEach((el) => {
+        el.removeEventListener("mouseenter", addHover);
+        el.removeEventListener("mouseleave", removeHover);
+      });
+      paperItems.forEach((item) => {
+        item.removeEventListener("mouseenter", onPaperEnter);
+        item.removeEventListener("mousemove", onPaperMove);
+        item.removeEventListener("mouseleave", onPaperLeave);
+      });
+      observer.disconnect();
+    };
+  }, []);
+
+  return { previewRef, previewInnerRef };
+}
+
+function Marquee({ items, reverse = false }) {
+  const doubled = [...items, ...items];
+  return (
+    <div className="marquee-wrap">
+      <div className={cx("marquee-track", reverse && "reverse")}>
+        {doubled.map((item, index) => (
+          <span key={`${item}-${index}`}>
+            {item} <i />
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function GaryAwardHomepage() {
+  const { previewRef, previewInnerRef } = usePortfolioInteractions();
+  const currentYear = useMemo(() => new Date().getFullYear(), []);
+
+  return (
+    <main className="gary-award-page">
+      <style>{`
+        .gary-award-page, .gary-award-page * { box-sizing: border-box; }
+        .gary-award-page {
+          --obsidian: #060606;
+          --cream: #f0e8d6;
+          --vermillion: #ff3319;
+          --gold: #c9a96e;
+          --muted: #7a7169;
+          --muted-2: #5a5550;
+          --border: rgba(240,232,214,0.095);
+          min-height: 100vh;
+          background: var(--obsidian);
+          color: var(--cream);
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+          font-weight: 300;
+          overflow-x: hidden;
+          cursor: none;
+          scroll-behavior: smooth;
+        }
+        .gary-award-page a, .gary-award-page button, .gary-award-page .paper-row, .gary-award-page .research-card, .gary-award-page .contact-card { cursor: none; }
+        .grain {
+          position: fixed;
+          inset: -50%;
+          width: 200%;
+          height: 200%;
+          z-index: 9000;
+          pointer-events: none;
+          opacity: 0.035;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          animation: grain 0.4s steps(1) infinite;
+        }
+        @keyframes grain {
+          0% { transform: translate(0,0); }
+          10% { transform: translate(-3%,-5%); }
+          20% { transform: translate(-6%,3%); }
+          30% { transform: translate(4%,-2%); }
+          40% { transform: translate(-2%,6%); }
+          50% { transform: translate(-5%,-4%); }
+          60% { transform: translate(3%,2%); }
+          70% { transform: translate(-4%,5%); }
+          80% { transform: translate(2%,-6%); }
+          90% { transform: translate(5%,3%); }
+          100% { transform: translate(-1%,-4%); }
+        }
+        .scanlines {
+          position: fixed;
+          inset: 0;
+          z-index: 8999;
+          pointer-events: none;
+          opacity: 0.18;
+          background: linear-gradient(rgba(240,232,214,0.025) 50%, transparent 50%);
+          background-size: 100% 4px;
+          animation: scanlines 8s linear infinite;
+        }
+        @keyframes scanlines { to { transform: translateY(10px); } }
+        .cursor-dot, .cursor-ring {
+          position: fixed;
+          top: 0;
+          left: 0;
+          z-index: 9999;
+          pointer-events: none;
+          transform: translate(-50%, -50%);
+        }
+        .cursor-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 999px;
+          background: var(--vermillion);
+          transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
+        }
+        .cursor-ring {
+          z-index: 9998;
+          width: 36px;
+          height: 36px;
+          border-radius: 999px;
+          border: 1px solid rgba(240,232,214,0.42);
+          transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+        }
+        .gary-award-page.cursor-hover .cursor-dot { width: 0; height: 0; }
+        .gary-award-page.cursor-hover .cursor-ring { width: 64px; height: 64px; border-color: var(--vermillion); mix-blend-mode: difference; }
+        .site-nav {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 800;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 28px 48px;
+          transition: background 0.6s ease, padding 0.4s ease, border-color 0.4s ease;
+        }
+        .site-nav.scrolled {
+          background: rgba(6,6,6,0.92);
+          backdrop-filter: blur(12px);
+          padding: 18px 48px;
+          border-bottom: 1px solid var(--border);
+        }
+        .nav-logo {
+          font-family: "Cormorant Garamond", Georgia, serif;
+          font-size: 22px;
+          font-weight: 600;
+          letter-spacing: 0.04em;
+          color: var(--cream);
+          text-decoration: none;
+        }
         .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
+          display: flex;
+          gap: 36px;
+          list-style: none;
+          margin: 0;
+          padding: 0;
         }
-
         .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            position: relative;
-            transition: all 0.3s;
-            font-weight: 600;
+          position: relative;
+          font-size: 11px;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--muted-2);
+          text-decoration: none;
+          transition: color 0.3s ease;
         }
-
         .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--neon-pink);
-            transition: width 0.3s;
-            box-shadow: var(--glow-pink);
+          content: "";
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          right: 100%;
+          height: 1px;
+          background: var(--vermillion);
+          transition: right 0.4s ease;
         }
-
-        .nav-links a:hover::after {
-            width: 100%;
+        .nav-links a:hover { color: var(--cream); }
+        .nav-links a:hover::after { right: 0; }
+        .nav-status {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 10px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--muted-2);
         }
-
-        .nav-links a:hover {
-            color: var(--neon-pink);
-            text-shadow: var(--glow-pink);
+        .status-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #2ecc71;
+          animation: pulseGreen 2.5s ease infinite;
         }
-
-        /* 主容器 */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 50px;
+        @keyframes pulseGreen {
+          0%,100% { box-shadow: 0 0 0 0 rgba(46,204,113,0.5); }
+          50% { box-shadow: 0 0 0 5px rgba(46,204,113,0); }
         }
-
-        /* Hero 区域 */
         .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+          position: relative;
+          height: 100vh;
+          min-height: 720px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding: 0 48px 82px;
+          overflow: hidden;
         }
-
-        /* 动态背景粒子 */
-        .particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
+        .hero-bg-line {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 58%;
+          width: 1px;
+          background: linear-gradient(to bottom, transparent, var(--border) 20%, var(--border) 80%, transparent);
         }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--neon-cyan);
-            border-radius: 50%;
-            opacity: 0;
-            animation: float 10s infinite;
-            box-shadow: var(--glow-cyan);
+        .signal-matrix {
+          position: absolute;
+          inset: 0;
+          display: grid;
+          grid-template-columns: repeat(10, 1fr);
+          grid-template-rows: repeat(10, 1fr);
+          opacity: 0.055;
+          pointer-events: none;
+          will-change: transform;
         }
-
-        @keyframes float {
-            0% {
-                opacity: 0;
-                transform: translateY(100vh) scale(0);
-            }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% {
-                opacity: 0;
-                transform: translateY(-100vh) scale(1.5);
-            }
+        .signal-matrix span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 22px;
+          color: var(--gold);
+          animation: matrixPulse 4s infinite;
         }
-
-        /* 扩散模型可视化背景 */
-        .diffusion-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            opacity: 0.3;
-        }
-
-        .diffusion-circle {
-            position: absolute;
-            border: 1px solid var(--neon-purple);
-            border-radius: 50%;
-            animation: diffuse 8s infinite ease-out;
-            box-shadow: var(--glow-purple);
-        }
-
-        @keyframes diffuse {
-            0% {
-                transform: scale(0);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(5);
-                opacity: 0;
-            }
-        }
-
-        /* Hero 内容 */
-        .hero-content {
-            text-align: center;
-            z-index: 10;
-            position: relative;
-        }
-
-        .name {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 120px;
-            font-weight: 900;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink), var(--neon-yellow));
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient 3s ease infinite;
-            position: relative;
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .title {
-            font-size: 36px;
-            margin-bottom: 30px;
-            color: var(--neon-cyan);
-            text-shadow: var(--glow-cyan);
-            animation: typewriter 3s steps(40) 1s both;
-            overflow: hidden;
-            white-space: nowrap;
-            border-right: 3px solid var(--neon-pink);
-        }
-
-        @keyframes typewriter {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        .subtitle {
-            font-size: 24px;
-            color: #888;
-            margin-bottom: 50px;
-            opacity: 0;
-            animation: fadeInUp 1s 2s forwards;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* 多模态图标矩阵 */
-        .multimodal-matrix {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            grid-template-rows: repeat(10, 1fr);
-            opacity: 0.1;
-            z-index: 1;
-        }
-
-        .matrix-icon {
-            font-size: 24px;
-            color: var(--neon-purple);
-            animation: matrixPulse 4s infinite;
-            text-shadow: var(--glow-purple);
-        }
-
+        .signal-matrix span:nth-child(3n) { color: var(--vermillion); animation-delay: 0.7s; }
+        .signal-matrix span:nth-child(5n) { animation-delay: 1.2s; }
         @keyframes matrixPulse {
-            0%, 100% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
+          0%,100% { opacity: 0.3; transform: scale(0.8); }
+          50% { opacity: 1; transform: scale(1.18); }
         }
-
-        /* CTA 按钮 */
-        .cta-buttons {
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            opacity: 0;
-            animation: fadeInUp 1s 2.5s forwards;
+        .hero-year {
+          position: absolute;
+          top: 140px;
+          right: 48px;
+          font-family: "Cormorant Garamond", Georgia, serif;
+          font-size: clamp(80px, 10vw, 160px);
+          font-weight: 300;
+          color: rgba(240,232,214,0.04);
+          line-height: 1;
+          pointer-events: none;
+          user-select: none;
+          animation: fadeUp 1.2s ease 0.3s both;
         }
-
-        .btn {
-            padding: 15px 40px;
-            border: 2px solid;
-            text-decoration: none;
-            color: #fff;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        .hero-index {
+          position: absolute;
+          top: 50%;
+          right: 48px;
+          transform: translateY(-50%);
+          writing-mode: vertical-rl;
+          font-size: 10px;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: var(--muted-2);
         }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+        .hero-scroll-hint {
+          position: absolute;
+          bottom: 88px;
+          right: 48px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+          font-size: 9px;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: var(--muted-2);
         }
-
-        .btn:hover::before {
-            left: 100%;
+        .hero-scroll-hint::after {
+          content: "";
+          display: block;
+          width: 1px;
+          height: 48px;
+          background: linear-gradient(to bottom, var(--muted-2), transparent);
+          animation: drip 2s ease-in-out infinite;
         }
-
-        .btn-primary {
-            border-color: var(--neon-cyan);
-            box-shadow: var(--glow-cyan);
+        @keyframes drip {
+          0%,100% { transform: scaleY(1); opacity: 1; }
+          50% { transform: scaleY(0.6); opacity: 0.4; }
         }
-
-        .btn-primary:hover {
-            background: var(--neon-cyan);
-            color: var(--dark-bg);
-            box-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
+        .hero-eyebrow {
+          position: relative;
+          z-index: 2;
+          font-size: 10px;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: var(--vermillion);
+          margin-bottom: 20px;
+          opacity: 0;
+          animation: fadeUp 1s ease 0.4s forwards;
         }
-
-        .btn-secondary {
-            border-color: var(--neon-pink);
-            box-shadow: var(--glow-pink);
+        .hero-name {
+          position: relative;
+          z-index: 2;
+          font-family: "Cormorant Garamond", Georgia, serif;
+          font-size: clamp(78px, 13vw, 184px);
+          font-weight: 300;
+          line-height: 0.88;
+          letter-spacing: -0.035em;
+          margin: 0 0 40px;
+          opacity: 0;
+          animation: fadeUp 1s ease 0.6s forwards;
+          will-change: transform;
         }
-
-        .btn-secondary:hover {
-            background: var(--neon-pink);
-            color: var(--dark-bg);
-            box-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink);
+        .hero-name em { font-style: italic; color: var(--gold); }
+        .hero-tagline {
+          position: relative;
+          z-index: 2;
+          max-width: 640px;
+          font-size: 13px;
+          line-height: 1.9;
+          color: var(--muted);
+          opacity: 0;
+          animation: fadeUp 1s ease 0.8s forwards;
         }
-
-        /* 章节通用样式 */
-        section {
-            padding: 100px 0;
-            position: relative;
+        .hero-tagline strong { color: var(--cream); font-weight: 400; }
+        .hero-cta-row {
+          position: relative;
+          z-index: 2;
+          margin-top: 40px;
+          display: flex;
+          gap: 30px;
+          flex-wrap: wrap;
+          opacity: 0;
+          animation: fadeUp 1s ease 1s forwards;
         }
-
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 48px;
-            text-align: center;
-            margin-bottom: 80px;
-            position: relative;
-            display: inline-block;
-            width: 100%;
+        .hero-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 14px;
+          font-size: 11px;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--cream);
+          text-decoration: none;
+          transition: gap 0.3s ease;
         }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: var(--neon-purple);
-            box-shadow: var(--glow-purple);
+        .hero-cta:hover { gap: 22px; }
+        .hero-cta-arrow {
+          width: 40px;
+          height: 1px;
+          background: var(--vermillion);
+          position: relative;
+          transition: width 0.3s ease;
         }
-
-        /* 关于我部分 */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
+        .hero-cta:hover .hero-cta-arrow { width: 56px; }
+        .hero-cta-arrow::after {
+          content: "";
+          position: absolute;
+          right: 0;
+          top: -3px;
+          border: 3.5px solid transparent;
+          border-left: 6px solid var(--vermillion);
         }
-
-        .about-text {
-            font-size: 18px;
-            line-height: 1.8;
-            color: #ccc;
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-
-        .about-text p {
-            margin-bottom: 20px;
+        .marquee-wrap {
+          overflow: hidden;
+          border-top: 1px solid var(--border);
+          border-bottom: 1px solid var(--border);
+          padding: 20px 0;
         }
-
-        .highlight {
-            color: var(--neon-yellow);
-            text-shadow: 0 0 10px var(--neon-yellow);
-            font-weight: 600;
+        .marquee-track {
+          display: flex;
+          width: max-content;
+          animation: marquee 24s linear infinite;
+          white-space: nowrap;
         }
-
-        .about-visual {
-            position: relative;
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .marquee-track.reverse { animation-direction: reverse; }
+        .marquee-track span {
+          display: inline-flex;
+          align-items: center;
+          gap: 40px;
+          padding: 0 40px;
+          font-family: "Cormorant Garamond", Georgia, serif;
+          font-size: 22px;
+          font-weight: 300;
+          font-style: italic;
+          color: var(--muted-2);
         }
-
-        /* 脑神经网络可视化 */
-        .brain-network {
-            width: 300px;
-            height: 300px;
-            position: relative;
+        .marquee-track i {
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background: var(--vermillion);
+          flex-shrink: 0;
         }
-
-        .neuron {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: var(--neon-pink);
-            border-radius: 50%;
-            box-shadow: var(--glow-pink);
-            animation: pulse 2s infinite;
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .section {
+          padding: 140px 48px;
+          position: relative;
+          border-top: 1px solid var(--border);
         }
-
-        .neuron:nth-child(1) { top: 20%; left: 30%; animation-delay: 0s; }
-        .neuron:nth-child(2) { top: 40%; left: 70%; animation-delay: 0.5s; }
-        .neuron:nth-child(3) { top: 60%; left: 20%; animation-delay: 1s; }
-        .neuron:nth-child(4) { top: 80%; left: 60%; animation-delay: 1.5s; }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.5); opacity: 0.7; }
+        .section-label {
+          font-size: 10px;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: var(--vermillion);
+          margin-bottom: 60px;
+          display: flex;
+          align-items: center;
+          gap: 16px;
         }
-
-        .connection {
-            position: absolute;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
-            transform-origin: left center;
-            animation: dataFlow 3s infinite;
-            box-shadow: var(--glow-cyan);
+        .section-label::before {
+          content: "";
+          display: block;
+          width: 28px;
+          height: 1px;
+          background: var(--vermillion);
         }
-
-        @keyframes dataFlow {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+        .about-grid {
+          display: grid;
+          grid-template-columns: 1fr 1.2fr;
+          gap: 100px;
+          align-items: start;
         }
-
-        /* 研究领域 */
+        .about-quote {
+          font-family: "Cormorant Garamond", Georgia, serif;
+          font-size: clamp(32px, 4.5vw, 56px);
+          font-weight: 300;
+          line-height: 1.22;
+          letter-spacing: -0.01em;
+          margin: 0;
+        }
+        .about-quote span { color: var(--gold); font-style: italic; }
+        .about-body { padding-top: 8px; }
+        .about-body p {
+          font-size: 13px;
+          line-height: 2;
+          color: var(--muted);
+          margin: 0 0 24px;
+        }
+        .about-body strong { color: var(--cream); font-weight: 400; }
+        .skills-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0;
+          margin-top: 48px;
+          border-top: 1px solid var(--border);
+        }
+        .skill-item {
+          padding: 18px 0;
+          border-bottom: 1px solid var(--border);
+          font-size: 11px;
+          letter-spacing: 0.06em;
+          color: var(--muted);
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          transition: color 0.3s ease;
+        }
+        .skill-item:hover { color: var(--cream); }
+        .skill-item::before { content: "—"; color: var(--vermillion); }
+        .skill-item:nth-child(odd) { padding-right: 24px; border-right: 1px solid var(--border); }
+        .skill-item:nth-child(even) { padding-left: 24px; }
+        .stats-bar {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          border-top: 1px solid var(--border);
+          border-left: 1px solid var(--border);
+          margin: 80px 0 0;
+        }
+        .stat {
+          padding: 40px 32px;
+          border-right: 1px solid var(--border);
+          border-bottom: 1px solid var(--border);
+        }
+        .stat-num {
+          font-family: "Cormorant Garamond", Georgia, serif;
+          font-size: 56px;
+          font-weight: 300;
+          line-height: 1;
+          color: var(--cream);
+          display: block;
+          margin-bottom: 8px;
+        }
+        .stat-num sup { font-size: 28px; vertical-align: super; color: var(--vermillion); }
+        .stat-label {
+          font-size: 10px;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: var(--muted-2);
+        }
+        .section-head {
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+          gap: 32px;
+          margin-bottom: 80px;
+        }
+        .section-title-large {
+          font-family: "Cormorant Garamond", Georgia, serif;
+          font-size: clamp(42px, 6vw, 82px);
+          font-weight: 300;
+          line-height: 1.05;
+          letter-spacing: -0.02em;
+          margin: 0;
+        }
+        .section-title-large em { font-style: italic; display: block; color: var(--gold); }
         .research-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 0;
+          border-top: 1px solid var(--border);
+          border-left: 1px solid var(--border);
         }
-
         .research-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(139, 0, 255, 0.3);
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
+          min-height: 360px;
+          padding: 38px 30px;
+          border-right: 1px solid var(--border);
+          border-bottom: 1px solid var(--border);
+          position: relative;
+          overflow: hidden;
+          transition: background 0.4s ease, transform 0.4s ease;
         }
-
-        .research-card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink), var(--neon-cyan));
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s;
-            filter: blur(10px);
-        }
-
-        .research-card:hover::before {
-            opacity: 1;
-        }
-
         .research-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(139, 0, 255, 0.3);
-            border-color: transparent;
+          background: rgba(240,232,214,0.025);
+          transform: translateY(-6px);
         }
-
-        .research-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: var(--neon-cyan);
-            text-shadow: var(--glow-cyan);
+        .research-num {
+          font-family: "Cormorant Garamond", Georgia, serif;
+          font-size: 72px;
+          font-weight: 300;
+          line-height: 1;
+          color: rgba(240,232,214,0.06);
+          position: absolute;
+          top: 24px;
+          right: 24px;
         }
-
-        .research-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: var(--neon-pink);
+        .research-card h3 {
+          font-family: Syne, Inter, sans-serif;
+          font-size: 19px;
+          font-weight: 800;
+          margin: 0 0 18px;
+          color: var(--cream);
         }
-
-        .research-description {
-            color: #aaa;
-            line-height: 1.6;
+        .research-card p {
+          font-size: 12px;
+          line-height: 1.9;
+          color: var(--muted);
+          margin: 0 0 26px;
         }
-
-        /* 论文发表 */
-        .papers-container {
-            display: grid;
-            gap: 30px;
+        .research-tag {
+          font-size: 10px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--vermillion);
         }
-
-        .paper-item {
-            background: rgba(0, 0, 0, 0.5);
-            border-left: 3px solid var(--neon-cyan);
-            padding: 30px;
-            position: relative;
-            transition: all 0.3s;
-            backdrop-filter: blur(5px);
+        .papers { display: flex; flex-direction: column; gap: 0; }
+        .paper-row {
+          display: grid;
+          grid-template-columns: 80px 0.75fr 1.25fr 190px;
+          align-items: center;
+          gap: 48px;
+          padding: 36px 0;
+          border-bottom: 1px solid var(--border);
+          position: relative;
+          overflow: hidden;
         }
-
-        .paper-item:hover {
-            transform: translateX(20px);
-            border-left: 3px solid var(--neon-pink);
-            box-shadow: var(--glow-pink);
+        .paper-row::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(90deg, transparent, rgba(201,169,110,0.04), transparent);
+          transform: translateX(-100%);
+          transition: transform 0.6s ease;
         }
-
+        .paper-row:hover::before { transform: translateX(100%); }
+        .paper-num {
+          font-family: "Cormorant Garamond", Georgia, serif;
+          font-size: 13px;
+          color: var(--muted-2);
+          font-style: italic;
+        }
         .paper-title {
-            font-size: 20px;
-            color: var(--neon-cyan);
-            margin-bottom: 10px;
-            text-shadow: var(--glow-cyan);
+          font-family: Syne, Inter, sans-serif;
+          font-size: clamp(18px, 2.1vw, 26px);
+          font-weight: 800;
+          letter-spacing: -0.02em;
+          color: var(--cream);
+          transition: color 0.3s ease;
         }
-
+        .paper-row:hover .paper-title { color: var(--gold); }
         .paper-meta {
-            color: #888;
-            font-size: 14px;
-            margin-bottom: 15px;
+          margin-top: 12px;
+          font-size: 10px;
+          letter-spacing: 0.08em;
+          color: var(--vermillion);
+          text-transform: uppercase;
         }
-
         .paper-abstract {
-            color: #ccc;
-            line-height: 1.6;
+          font-size: 12px;
+          line-height: 1.85;
+          color: var(--muted);
         }
-
         .paper-tags {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+          gap: 8px;
         }
-
-        .tag {
-            padding: 5px 15px;
-            background: rgba(139, 0, 255, 0.2);
-            border: 1px solid var(--neon-purple);
-            border-radius: 20px;
-            font-size: 12px;
-            color: var(--neon-purple);
-            transition: all 0.3s;
+        .paper-tags span {
+          border: 1px solid var(--border);
+          color: var(--muted);
+          font-size: 10px;
+          letter-spacing: 0.08em;
+          padding: 8px 11px;
+          text-transform: uppercase;
         }
-
-        .tag:hover {
-            background: var(--neon-purple);
-            color: var(--dark-bg);
-            transform: scale(1.1);
+        .paper-preview {
+          position: fixed;
+          z-index: 700;
+          width: 300px;
+          height: 184px;
+          border-radius: 4px;
+          overflow: hidden;
+          pointer-events: none;
+          opacity: 0;
+          transform: scale(0.96);
+          transition: opacity 0.3s ease, transform 0.3s ease;
+          border: 1px solid rgba(240,232,214,0.12);
         }
-
-        /* 联系我 */
-        .contact-section {
-            text-align: center;
+        .paper-preview.active { opacity: 1; transform: scale(1); }
+        .paper-preview-inner {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          padding: 28px;
+          font-family: "Cormorant Garamond", Georgia, serif;
+          font-size: 30px;
+          font-weight: 300;
+          font-style: italic;
+          line-height: 1.08;
         }
-
+        .contact {
+          border-top: 1px solid var(--border);
+          text-align: center;
+          padding: 160px 48px 120px;
+        }
+        .contact-pre {
+          font-size: 11px;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: var(--muted-2);
+          margin-bottom: 32px;
+        }
+        .contact-big {
+          font-family: "Cormorant Garamond", Georgia, serif;
+          font-size: clamp(48px, 9vw, 120px);
+          font-weight: 300;
+          line-height: 0.95;
+          letter-spacing: -0.02em;
+          margin: 0 0 56px;
+        }
+        .contact-big a {
+          color: var(--cream);
+          text-decoration: none;
+          position: relative;
+          display: inline-block;
+          transition: color 0.4s ease;
+        }
+        .contact-big a em { font-style: italic; color: var(--gold); }
+        .contact-big a::after {
+          content: "";
+          position: absolute;
+          bottom: 4px;
+          left: 0;
+          right: 100%;
+          height: 2px;
+          background: var(--vermillion);
+          transition: right 0.6s cubic-bezier(0.23,1,0.32,1);
+        }
+        .contact-big a:hover::after { right: 0; }
+        .contact-subtitle {
+          max-width: 820px;
+          margin: 0 auto 54px;
+          font-size: 14px;
+          line-height: 2;
+          color: var(--muted);
+        }
         .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-top: 60px;
+          max-width: 1100px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 0;
+          border-top: 1px solid var(--border);
+          border-left: 1px solid var(--border);
+          text-align: left;
         }
-
-        .contact-item {
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--neon-cyan);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .contact-card {
+          min-height: 150px;
+          border-right: 1px solid var(--border);
+          border-bottom: 1px solid var(--border);
+          padding: 28px 24px;
+          color: var(--cream);
+          text-decoration: none;
+          transition: background 0.3s ease;
+          overflow-wrap: anywhere;
         }
-
-        .contact-item::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: var(--neon-cyan);
-            border-radius: 50%;
-            transition: all 0.5s;
-            transform: translate(-50%, -50%);
-            z-index: -1;
-        }
-
-        .contact-item:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .contact-item:hover {
-            color: var(--dark-bg);
-            transform: scale(1.05);
-            box-shadow: var(--glow-cyan);
-        }
-
-        .contact-icon {
-            font-size: 42px;
-            margin-bottom: 20px;
-            color: var(--neon-cyan);
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .contact-item:hover .contact-icon {
-            color: var(--dark-bg);
-            transform: scale(1.2);
-        }
-
+        .contact-card:hover { background: rgba(240,232,214,0.025); }
         .contact-label {
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+          font-size: 10px;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: var(--vermillion);
+          margin-bottom: 18px;
         }
-
         .contact-value {
-            font-size: 18px;
-            font-weight: 600;
-            text-align: center;
+          font-size: 13px;
+          line-height: 1.7;
+          color: var(--muted);
         }
-
-        /* 页脚 */
-        footer {
-            padding: 50px 0;
-            text-align: center;
-            border-top: 1px solid rgba(139, 0, 255, 0.3);
-            color: #666;
-            position: relative;
+        .footer {
+          padding: 32px 48px;
+          border-top: 1px solid var(--border);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+          font-size: 10px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--muted-2);
         }
-
-        .footer-glow {
-            position: absolute;
-            top: -1px;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--neon-purple), transparent);
-            animation: glowPulse 2s infinite;
+        .reveal {
+          opacity: 0;
+          transform: translateY(40px);
+          transition: opacity 0.9s cubic-bezier(0.23,1,0.32,1), transform 0.9s cubic-bezier(0.23,1,0.32,1);
         }
-
-        @keyframes glowPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+        .reveal.visible { opacity: 1; transform: none; }
+        .reveal-d1 { transition-delay: 0.1s; }
+        .reveal-d2 { transition-delay: 0.2s; }
+        .reveal-d3 { transition-delay: 0.3s; }
+        @media (max-width: 1100px) {
+          .research-grid { grid-template-columns: repeat(2, 1fr); }
+          .paper-row { grid-template-columns: 1fr; gap: 16px; }
+          .paper-num { display: none; }
+          .paper-tags { justify-content: flex-start; }
+          .contact-grid { grid-template-columns: repeat(2, 1fr); }
         }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .name { font-size: 60px; }
-            .title { font-size: 24px; }
-            .about-content { grid-template-columns: 1fr; }
-            .nav-links { display: none; }
+        @media (max-width: 780px) {
+          .site-nav { padding: 24px; }
+          .site-nav.scrolled { padding: 16px 24px; }
+          .nav-links, .nav-status { display: none; }
+          .hero { padding: 0 24px 60px; min-height: 680px; }
+          .hero-year, .hero-index, .hero-scroll-hint { display: none; }
+          .section { padding: 100px 24px; }
+          .about-grid { grid-template-columns: 1fr; gap: 60px; }
+          .stats-bar { grid-template-columns: repeat(2, 1fr); }
+          .research-grid, .contact-grid { grid-template-columns: 1fr; }
+          .section-head { flex-direction: column; align-items: flex-start; }
+          .paper-preview { display: none; }
+          .footer { flex-direction: column; text-align: center; }
         }
-
-        /* 滚动提示 */
-        .scroll-hint {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
+        @media (pointer: coarse) {
+          .gary-award-page, .gary-award-page a, .gary-award-page button, .gary-award-page .paper-row, .gary-award-page .research-card, .gary-award-page .contact-card { cursor: auto; }
+          .cursor-dot, .cursor-ring { display: none; }
         }
+      `}</style>
 
-        .scroll-hint i {
-            font-size: 30px;
-            color: var(--neon-cyan);
-            text-shadow: var(--glow-cyan);
-        }
+      <div className="grain" />
+      <div className="scanlines" />
+      <div className="cursor-dot" />
+      <div className="cursor-ring" />
 
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-10px); }
-        }
+      <nav className="site-nav">
+        <a href="#top" className="nav-logo">Gary @USTC.</a>
+        <ul className="nav-links">
+          {navItems.map((item) => (
+            <li key={item.href}><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+        <div className="nav-status"><span className="status-dot" /> Diffusion & MLLMs</div>
+      </nav>
 
-        /* 小红书图标样式 */
-        .fa-leaf {
-            color: var(--neon-pink);
-        }
-
-        .contact-item:hover .fa-leaf {
-            color: var(--dark-bg);
-        }
-
-        /* Google Scholar图标增强 */
-        .fa-graduation-cap {
-            font-size: 44px;
-        }
-    </style>
-</head>
-<body>
-    <!-- 自定义光标 -->
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
-
-    <!-- 扫描线效果 -->
-    <div class="scanlines"></div>
-
-    <!-- 导航栏 -->
-    <nav>
-        <div class="nav-container">
-            <div class="logo">GARY @USTC</div>
-            <ul class="nav-links">
-                <li><a href="#home">HOME</a></li>
-                <li><a href="#about">ABOUT</a></li>
-                <li><a href="#research">RESEARCH</a></li>
-                <li><a href="#publications">PAPERS</a></li>
-                <li><a href="#contact">CONTACT</a></li>
-            </ul>
+      <section className="hero" id="top">
+        <div className="hero-bg-line" />
+        <div className="signal-matrix" aria-hidden="true">
+          {Array.from({ length: 100 }).map((_, index) => (
+            <span key={index}>{["✦", "◇", "○", "×", "△", "∴", "∵", "Ψ"][index % 8]}</span>
+          ))}
         </div>
-    </nav>
+        <div className="hero-year">{currentYear}</div>
+        <div className="hero-index">Portfolio — Diffusion & MLLMs</div>
+        <div className="hero-scroll-hint">Scroll</div>
 
-    <!-- Hero 区域 -->
-    <section id="home" class="hero">
-        <!-- 扩散模型背景 -->
-        <div class="diffusion-bg" id="diffusionBg"></div>
-        
-        <!-- 粒子效果 -->
-        <div class="particles" id="particles"></div>
-        
-        <!-- 多模态图标矩阵 -->
-        <div class="multimodal-matrix" id="matrix"></div>
-        
-        <div class="hero-content">
-            <h1 class="name">GARY</h1>
-            <h2 class="title">Diffusion & MLLMs</h2>
-            <p class="subtitle">探索扩散的无限可能 · 构建多模态的未来</p>
-            
-            <div class="cta-buttons">
-                <a href="#publications" class="btn btn-primary">My Papers</a>
-                <a href="#contact" class="btn btn-secondary">Contact Me</a>
+        <p className="hero-eyebrow">PhD Researcher · Diffusion Models · Multimodal Large Models</p>
+        <h1 className="hero-name">Gary<br /><em>@USTC.</em></h1>
+        <p className="hero-tagline">
+          Exploring the boundaries of generative AI — turning <strong>noise into art</strong>, and enabling <strong>text, images, video, and 3D</strong> to flow across modalities.
+        </p>
+        <div className="hero-cta-row">
+          <a href="#papers" className="hero-cta">
+            My Papers
+            <span className="hero-cta-arrow" />
+          </a>
+          <a href="#contact" className="hero-cta">
+            Contact Me
+            <span className="hero-cta-arrow" />
+          </a>
+        </div>
+      </section>
+
+      <Marquee items={marqueeA} />
+
+      <section className="section" id="about">
+        <p className="section-label reveal">About Me</p>
+        <div className="about-grid">
+          <div className="reveal reveal-d1">
+            <blockquote className="about-quote">
+              Finding <span>order</span> within noise, and resonance across modalities.
+            </blockquote>
+            <div className="stats-bar">
+              {stats.map(([num, sup, label]) => (
+                <div className="stat" key={label}>
+                  <span className="stat-num">{num}{sup && <sup>{sup}</sup>}</span>
+                  <span className="stat-label">{label}</span>
+                </div>
+              ))}
             </div>
-        </div>
-        
-        <div class="scroll-hint">
-            <i class="fas fa-chevron-down"></i>
-        </div>
-    </section>
+          </div>
 
-    <!-- 关于我 -->
-    <section id="about">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>I am <span class="highlight">Gary</span>, a PhD focusing on <span class="highlight">diffusion models</span> and <span class="highlight">multimodal large models</span>.</p>
-<p>My research is dedicated to exploring the boundaries of generative AI, turning <span class="highlight">noise into art</span> and enabling <span class="highlight">text, images, video, and 3D</span> to flow freely across different modalities.</p>
-<p>In this digital era, I believe AI is not just a tool but also <span class="highlight">an extension of creativity</span>. By continuously optimizing the diffusion process, I am building intelligent systems capable of understanding and creating <span class="highlight">multimodal content</span>.</p>
-<p>When I am not training models, I enjoy thinking about <span class="highlight">the nature of consciousness</span> and <span class="highlight">the emergence of intelligence</span>—perhaps the next breakthrough is hidden somewhere deep in a dream.</p>
-                    <p>我是<span class="highlight">Gary</span>，一名专注于<span class="highlight">扩散模型</span>和<span class="highlight">多模态大模型</span>研究的PhD。</p>
-                    <p>我的研究致力于探索生成式AI的边界，将<span class="highlight">噪声转化为艺术</span>，让<span class="highlight">文本、图像、视频、3D</span>在不同模态间自由流转。</p>
-                    <p>在这个数字化时代，我相信AI不仅是工具，更是<span class="highlight">创造力的延伸</span>。通过不断优化扩散过程，我正在构建能够理解和创造<span class="highlight">多模态内容</span>的智能系统。</p>
-                    <p>当我不在训练模型时，我喜欢思考<span class="highlight">意识的本质</span>和<span class="highlight">智能的涌现</span>——也许下一个突破就藏在梦境深处。</p>
-                </div>
-                <div class="about-visual">
-                    <!-- 脑神经网络可视化 -->
-                    <div class="brain-network" id="brainNetwork">
-                        <div class="neuron"></div>
-                        <div class="neuron"></div>
-                        <div class="neuron"></div>
-                        <div class="neuron"></div>
-                        <svg width="300" height="300" style="position: absolute; top: 0; left: 0;">
-                            <defs>
-                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#ff006e;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#00f5ff;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
-                </div>
+          <div className="about-body reveal reveal-d2">
+            <p>
+              I am <strong>Gary</strong>, a PhD focusing on <strong>diffusion models</strong> and <strong>multimodal large models</strong>.
+            </p>
+            <p>
+              My research is dedicated to exploring the boundaries of generative AI, turning <strong>noise into art</strong> and enabling <strong>text, images, video, and 3D</strong> to flow freely across different modalities.
+            </p>
+            <p>
+              In this digital era, I believe AI is not just a tool but also <strong>an extension of creativity</strong>. By continuously optimizing the diffusion process, I am building intelligent systems capable of understanding and creating <strong>multimodal content</strong>.
+            </p>
+            <p>
+              我是 <strong>Gary</strong>，一名专注于 <strong>扩散模型</strong> 和 <strong>多模态大模型</strong> 研究的 PhD。我的研究致力于探索生成式 AI 的边界，将噪声转化为艺术，让文本、图像、视频、3D 在不同模态间自由流转。
+            </p>
+            <div className="skills-grid">
+              {skills.map((skill) => <div className="skill-item" key={skill}>{skill}</div>)}
             </div>
+          </div>
         </div>
-    </section>
+      </section>
 
-    <!-- 研究领域 -->
-    <section id="research">
-        <div class="container">
-            <h2 class="section-title">Research Interests 研究领域</h2>
-            <div class="research-grid">
-                <div class="research-card">
-                    <div class="research-icon">
-                        <i class="fas fa-wave-square"></i>
-                    </div>
-                    <h3 class="research-title">Diffusion 扩散模型</h3>
-                    <p class="research-description">
-                        Conduct an in-depth study of the mathematical principles of diffusion processes, explore more efficient sampling algorithms and noise scheduling strategies, and strive to reduce diffusion time from infinity to the millisecond level.
-                        深入研究扩散过程的数学原理，探索更高效的采样算法和噪声调度策略。致力于将扩散时间从无限缩短到毫秒级。
-                    </p>
-                </div>
-                <div class="research-card">
-                    <div class="research-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3 class="research-title">MLLMs 多模态融合</h3>
-                    <p class="research-description">
-                        Construct a unified representation space that enables free modality conversion in the latent space, achieving true cross-modal understanding and generation.
-                        构建统一的表示空间，让模态在潜空间中自由转换。实现真正的跨模态理解和生成。
-                    </p>
-                </div>
-                <div class="research-card">
-                    <div class="research-icon">
-                        <i class="fas fa-atom"></i>
-                    </div>
-                    <h3 class="research-title">Efficiency 高效推理</h3>
-                    Through model compression, quantization, and distillation, bring large models to edge devices—making AI omnipresent and omnipotent.
-                        通过模型压缩、量化蒸馏等技术，让大模型在边缘设备上奔跑。让AI无处不在，无所不能。
-                    </p>
-                </div>
-                <div class="research-card">
-                    <div class="research-icon">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <h3 class="research-title">AI Art AI艺术</h3>
-                    <p class="research-description">
-                        Treat algorithms as brushes and noise as pigment; probe the resonance between machine creativity and human aesthetics to birth entirely new art forms.
-                        将算法视为画笔，噪声视为颜料。探索机器创造力与人类审美的共鸣点，创造前所未有的艺术形式。
-                    </p>
-                </div>
-            </div>
+      <section className="section" id="research">
+        <p className="section-label reveal">Research Interests 研究领域</p>
+        <div className="section-head">
+          <h2 className="section-title-large reveal">Research<br /><em>Directions</em></h2>
         </div>
-    </section>
-
-    <!-- 论文发表 -->
-    <section id="publications">
-        <div class="container">
-            <h2 class="section-title">Papers 论文发表</h2>
-            <div class="papers-container">
-                <div class="paper-item">
-                    <h3 class="paper-title">Beyond Randomness: Understand the Order of the Noise in Diffusion</h3>
-                    <div class="paper-meta">
-                        <i class="fas fa-calendar"></i> 2025.11 | 
-                        <i class="fas fa-users"></i> Gary, et al. | 
-                        <i class="fas fa-file"></i> Under Review
-                    </div>
-                    <p class="paper-abstract">
-                        In text-driven content generation (T2C) diffusion model, semantic of generated content is mostly attributed to the process of text embedding and attention mechanism interaction. The initial noise of the generation process is typically characterized as a random element that contributes to the diversity of the generated content. Contrary to this view, this paper reveals that beneath the random surface of noise lies strong analyzable patterns. Specifically, this paper first conducts a comprehensive analysis of the impact of random noise on the model's generation. We found that noise not only contains rich semantic information, but also allows for the erasure of unwanted semantics from it in an extremely simple way based on information theory, and using the equivalence between the generation process of diffusion model and semantic injection to inject semantics into the cleaned noise. Then, we mathematically decipher these observations and propose a simple but efficient training-free and universal two-step "Semantic Erasure-Injection" process to modulate the initial noise in T2C diffusion model. Experimental results demonstrate that our method is consistently effective across various T2C models based on both DiT and UNet architectures and presents a novel perspective for optimizing the generation of diffusion model, providing a universal tool for consistent generation.
-                    </p>
-                    <div class="paper-tags">
-                        <span class="tag">Diffusion 扩散模型</span>
-                        <span class="tag">Noise Optimization 噪声优化</span>
-                        <span class="tag">Training-free</span>
-                    </div>
-                </div>
-                
-                <div class="paper-item">
-                    <h3 class="paper-title">Break Stylistic Sophon: Are We Really Meant to Confine the Imagination in Style Transfer?</h3>
-                    <div class="paper-meta">
-                        <i class="fas fa-calendar"></i> 2025.05| 
-                        <i class="fas fa-users"></i> Gary, et al. | 
-                        <i class="fas fa-file"></i> Under Review
-                    </div>
-                    <p class="paper-abstract">
-                        In the realm of image style transfer, existing algorithms relying on single reference style images encounter formidable challenges, such as severe semantic drift, overfitting, color limitations, and a lack of a unified framework. These issues impede the generation of high quality, diverse, and semantically accurate images. In this study, we introduce StyleWallfacer, an innovative unified training and inference framework, which not only addresses various issues encountered in the style transfer process of traditional methods but also unifies the framework for different tasks. This framework is designed to advance the development of this field by enabling high-quality style transfer and text driven stylization. First, we propose a semantic-based style injection method that uses BLIP to generate text descriptions strictly aligned with the semantics of the style image in CLIP space. By leveraging a large language model to remove style-related descriptions from these descriptions, we create a semantic gap. This gap is then used to fine-tune the model, enabling efficient and drift-free injection of style knowledge. Second, we propose a data augmentation strategy based on human feedback, incorporating high-quality samples generated early in the fine-tuning process into the training set to facilitate progressive learning and significantly reduce its overfitting. Finally, we design a training-free triple diffusion process using the fine-tuned model, which manipulates the features of self-attention layers in a manner similar to the cross-attention mechanism. Specifically, in the generation process, the key and value of the content-related process are replaced with those of the style-related process to inject style while maintaining text control over the model. We also introduce query preservation to mitigate disruptions to the original content. Under such a design, we have achieved high-quality image-driven style transfer and text-driven stylization, delivering high-quality style transfer results while preserving the original image content. Moreover, we achieve image color editing during the style transfer process for the first time, further pushing the boundaries of controllable image generation and editing technologies and breaking the limitations imposed by reference images on style transfer. Our experimental results demonstrate that our proposed method outperforms state-of-the-art methods.
-                    </p>
-                    <div class="paper-tags">
-                        <span class="tag">AI Art AI艺术</span>
-                        <span class="tag">Style Transfer 风格迁移</span>
-                        <span class="tag">Diffusion 扩散模型</span>
-                    </div>
-                </div>
-                
-                <div class="paper-item">
-                    <h3 class="paper-title">SHSRD: Efficient Conditional Diffusion Model for Single Hyperspectral Image Superresolution</h3>
-                    <div class="paper-meta">
-                        <i class="fas fa-calendar"></i> 2025.03 | 
-                        <i class="fas fa-users"></i> Gary, et al. | 
-                        <i class="fas fa-file"></i> JSTARS 2025
-                    </div>
-                    <p class="paper-abstract">
-                        The emergence of deep neural networks has spurred progress in single hyperspectral image (HSI) superresolution. However, mainstream models prioritize network architecture and optimization, overlooking the limitations of HSI datasets’ small scale and potential data imbalance. Direct training models with such datasets can lead to issues, such as overfitting. To better solve the above-mentioned problems from the perspective of dataset, we propose SHSRD, an advanced superresolution framework specifically designed for HSIs based on diffusion model. It incorporates a spectral information injection module, which selectively introduces diverse spectral information into the model in a conditional manner, thereby enabling efficient spectral information perception. Furthermore, a two-stage training strategy is meticulously devised. Initially, the model undergoes pretraining on a large-scale natural image dataset. Subsequently, leveraging transfer learning techniques, the knowledge acquired from the natural image dataset is seamlessly transferred to the single HSI superresolution task. This strategic approach culminates in the realization of high-quality superresolution for single HSIs, effectively addressing the challenges associated with limited training data in hyperspectral imaging. It also demonstrates significant generalization, with only one pretraining session on a natural image dataset required for scale-specific tasks, allowing for rapid transfer to any small HSI dataset. Extensive experiments on four public datasets demonstrate that SHSRD outperforms state-of-the-art methods.
-                    </p>
-                    <div class="paper-tags">
-                        <span class="tag">Diffusion 扩散模型</span>
-                        <span class="tag">HSI 高光谱图像</span>
-                        <span class="tag">Low-Level Vision 底层视觉</span>
-                    </div>
-                </div>
-                
-            </div>
+        <div className="research-grid">
+          {researchAreas.map((area, index) => (
+            <article className={cx("research-card reveal", index % 2 === 1 && "reveal-d1", index % 2 === 0 && index > 0 && "reveal-d2")} key={area.title}>
+              <span className="research-num">{area.num}</span>
+              <h3>{area.title}</h3>
+              <p>{area.body}</p>
+              <div className="research-tag">{area.tag}</div>
+            </article>
+          ))}
         </div>
-    </section>
+      </section>
 
-    <!-- 联系我 -->
-    <section id="contact">
-        <div class="container">
-            <h2 class="section-title">Contact Me 建立连接</h2>
-            <div class="contact-section">
-                <p style="font-size: 20px; color: #ccc; margin-bottom: 40px;">
-                    Let’s together unlock AI’s boundless potential—finding order within noise and harmony across modalities.
-                    让我们一起探索AI的无限可能，在噪声中发现秩序，在模态间寻找共鸣。
-                </p>
-                <div class="contact-grid">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-label">Email 邮箱</div>
-                        <div class="contact-value">Gary_144@mail.ustc.edu.cn</div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-leaf"></i>
-                        </div>
-                        <div class="contact-label">RedNote 小红书</div>
-                        <div class="contact-value">@gary爱登山</div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-github"></i>
-                        </div>
-                        <div class="contact-label">GitHub</div>
-                        <a href="https://songyan888.github.io/" target="_blank" rel="noopener noreferrer" class="contact-value contact-link">
-                                songyan888.github.io
-                            </a>
-
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <div class="contact-label">Google Scholar</div>
-                         <a href="https://scholar.google.com/citations?hl=en&view_op=list_works&gmla=AH8HC4wqFErU2rFoEGuxJmJbjdzYmuspChI4l0UFBpFuIZnh65Kr9BgvPZ5oNnkAUVRDao0hVf2Z_XSwC800SQ_jIjLBvqwWK98_yjLzJK4&user=eCL463UAAAAJ" 
-                               target="_blank" rel="noopener noreferrer" class="contact-value contact-link">
-                                Google Scholar
-                            </a>
-                </div>
-            </div>
+      <section className="section" id="papers">
+        <div className="section-head">
+          <div>
+            <p className="section-label reveal">Papers 论文发表</p>
+            <h2 className="section-title-large reveal reveal-d1">Selected<br /><em>Papers</em></h2>
+          </div>
+          <a href="#contact" className="hero-cta reveal reveal-d2">
+            Discuss collaboration
+            <span className="hero-cta-arrow" />
+          </a>
         </div>
-    </section>
 
-    <!-- 页脚 -->
-    <footer>
-        <div class="footer-glow"></div>
-        <p>&copy; 2025 Gary. All Rights Reserved.</p>
-    </footer>
+        <div className="papers">
+          {papers.map((paper, index) => (
+            <article
+              className={cx("paper-row reveal", index === 1 && "reveal-d1", index === 2 && "reveal-d2")}
+              key={paper.title}
+              data-color={paper.color}
+              data-accent={paper.accent}
+              data-preview={paper.preview}
+            >
+              <span className="paper-num">{paper.num} —</span>
+              <div>
+                <h3 className="paper-title">{paper.title}</h3>
+                <div className="paper-meta">{paper.meta}</div>
+              </div>
+              <p className="paper-abstract">{paper.abstract}</p>
+              <div className="paper-tags">
+                {paper.tags.map((tag) => <span key={tag}>{tag}</span>)}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
 
-    <script>
-        // 自定义光标
-        const cursor = document.querySelector('.cursor');
-        const cursorFollower = document.querySelector('.cursor-follower');
+      <Marquee items={marqueeB} reverse />
 
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX - 10 + 'px';
-            cursor.style.top = e.clientY - 10 + 'px';
-            
-            setTimeout(() => {
-                cursorFollower.style.left = e.clientX - 20 + 'px';
-                cursorFollower.style.top = e.clientY - 20 + 'px';
-            }, 100);
-        });
+      <section className="contact" id="contact">
+        <p className="contact-pre reveal">Contact Me 建立连接</p>
+        <h2 className="contact-big reveal reveal-d1">
+          <a href="mailto:Gary_144@mail.ustc.edu.cn">Gary_144<em>@mail</em><br />ustc.edu.cn</a>
+        </h2>
+        <p className="contact-subtitle reveal reveal-d2">
+          Let’s together unlock AI’s boundless potential — finding order within noise and harmony across modalities. 让我们一起探索 AI 的无限可能，在噪声中发现秩序，在模态间寻找共鸣。
+        </p>
+        <div className="contact-grid reveal reveal-d3">
+          <a className="contact-card" href="mailto:Gary_144@mail.ustc.edu.cn">
+            <div className="contact-label">Email 邮箱</div>
+            <div className="contact-value">Gary_144@mail.ustc.edu.cn</div>
+          </a>
+          <a className="contact-card" href="https://songyan888.github.io/" target="_blank" rel="noopener noreferrer">
+            <div className="contact-label">GitHub / Homepage</div>
+            <div className="contact-value">songyan888.github.io</div>
+          </a>
+          <a className="contact-card" href="https://scholar.google.com/citations?hl=en&view_op=list_works&gmla=AH8HC4wqFErU2rFoEGuxJmJbjdzYmuspChI4l0UFBpFuIZnh65Kr9BgvPZ5oNnkAUVRDao0hVf2Z_XSwC800SQ_jIjLBvqwWK98_yjLzJK4&user=eCL463UAAAAJ" target="_blank" rel="noopener noreferrer">
+            <div className="contact-label">Google Scholar</div>
+            <div className="contact-value">Publications profile</div>
+          </a>
+          <div className="contact-card">
+            <div className="contact-label">RedNote 小红书</div>
+            <div className="contact-value">@gary爱登山</div>
+          </div>
+        </div>
+      </section>
 
-        // 创建粒子
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 2 + 's';
-            particle.style.animationDuration = (Math.random() * 5 + 5) + 's';
-            document.getElementById('particles').appendChild(particle);
-            
-            setTimeout(() => {
-                particle.remove();
-            }, 10000);
-        }
+      <footer className="footer">
+        <span>© {currentYear} Gary. All Rights Reserved.</span>
+        <span>USTC · Tokyo / Global</span>
+        <span>Diffusion & MLLMs</span>
+      </footer>
 
-        setInterval(createParticle, 200);
-
-        // 扩散动画
-        function createDiffusion() {
-            const circle = document.createElement('div');
-            circle.className = 'diffusion-circle';
-            circle.style.width = '50px';
-            circle.style.height = '50px';
-            circle.style.left = Math.random() * 100 + '%';
-            circle.style.top = Math.random() * 100 + '%';
-            circle.style.animationDuration = (Math.random() * 3 + 5) + 's';
-            document.getElementById('diffusionBg').appendChild(circle);
-            
-            setTimeout(() => {
-                circle.remove();
-            }, 8000);
-        }
-
-        setInterval(createDiffusion, 2000);
-
-        // 多模态矩阵
-        const matrix = document.getElementById('matrix');
-        const icons = ['📝', '🖼️', '🎵', '🎬', '🗣️', '👁️', '🧠', '💭'];
-        
-        for(let i = 0; i < 100; i++) {
-            const icon = document.createElement('div');
-            icon.className = 'matrix-icon';
-            icon.textContent = icons[Math.floor(Math.random() * icons.length)];
-            icon.style.animationDelay = Math.random() * 4 + 's';
-            matrix.appendChild(icon);
-        }
-
-        // 神经网络连接
-        function createConnection() {
-            const brainNetwork = document.getElementById('brainNetwork');
-            const neurons = brainNetwork.querySelectorAll('.neuron');
-            const svg = brainNetwork.querySelector('svg');
-            
-            neurons.forEach((neuron, i) => {
-                if(i < neurons.length - 1) {
-                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                    const rect = brainNetwork.getBoundingClientRect();
-                    const neuron1Rect = neuron.getBoundingClientRect();
-                    const neuron2Rect = neurons[i + 1].getBoundingClientRect();
-                    
-                    line.setAttribute('x1', neuron1Rect.left - rect.left + 10);
-                    line.setAttribute('y1', neuron1Rect.top - rect.top + 10);
-                    line.setAttribute('x2', neuron2Rect.left - rect.left + 10);
-                    line.setAttribute('y2', neuron2Rect.top - rect.top + 10);
-                    line.setAttribute('stroke', 'url(#gradient)');
-                    line.setAttribute('stroke-width', '2');
-                    line.setAttribute('opacity', '0.5');
-                    line.setAttribute('class', 'connection');
-                    
-                    svg.appendChild(line);
-                }
-            });
-        }
-
-        setTimeout(createConnection, 1000);
-
-        // 平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if(target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // 滚动视差效果
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.multimodal-matrix');
-            parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
-            
-            // 导航栏效果
-            const nav = document.querySelector('nav');
-            if(scrolled > 100) {
-                nav.style.background = 'rgba(10, 10, 10, 0.95)';
-                nav.style.boxShadow = '0 5px 20px rgba(0, 245, 255, 0.5)';
-            } else {
-                nav.style.background = 'rgba(10, 10, 10, 0.9)';
-                nav.style.boxShadow = '0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 30px #00f5ff';
-            }
-        });
-
-        // 页面加载动画
-        window.addEventListener('load', () => {
-            document.body.style.opacity = '1';
-            
-            // 添加加载完成后的额外动画
-            setTimeout(() => {
-                document.querySelector('.name').style.animation = 'gradient 3s ease infinite';
-            }, 3000);
-        });
-
-        // 鼠标悬停效果
-        document.querySelectorAll('.research-card, .paper-item, .contact-item').forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(1.5)';
-                cursor.style.borderColor = 'var(--neon-pink)';
-            });
-            
-            item.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-                cursor.style.borderColor = 'var(--neon-cyan)';
-            });
-        });
-
-        // 动态更新多模态矩阵
-        setInterval(() => {
-            const matrixIcons = document.querySelectorAll('.matrix-icon');
-            matrixIcons.forEach(icon => {
-                if(Math.random() > 0.9) {
-                    icon.textContent = icons[Math.floor(Math.random() * icons.length)];
-                    icon.style.color = ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-purple)'][Math.floor(Math.random() * 3)];
-                }
-            });
-        }, 1000);
-    </script>
-</body>
-</html>
+      <div className="paper-preview" ref={previewRef}>
+        <div className="paper-preview-inner" ref={previewInnerRef} />
+      </div>
+    </main>
+  );
+}
