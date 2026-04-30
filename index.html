@@ -3,16 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Gary @USTC — Diffusion Models & Multimodal Large Models Research" />
-  <title>Gary @USTC — Diffusion & MLLMs</title>
+  <meta name="description" content="Gary" />
+  <title>Gary — Diffusion & MLLMs</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       background: #000;
       color: #fff;
@@ -20,8 +28,16 @@
       font-family: 'Barlow', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       font-weight: 300;
     }
-    a { color: inherit; text-decoration: none; }
-    strong { font-weight: 500; color: #fff; }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    strong {
+      font-weight: 500;
+      color: #fff;
+    }
 
     :root {
       --white-04: rgba(255,255,255,0.04);
@@ -41,9 +57,6 @@
       --font-body: 'Barlow', system-ui, sans-serif;
     }
 
-    .font-heading { font-family: var(--font-heading); }
-    .italic { font-style: italic; }
-
     .liquid-glass,
     .liquid-glass-strong {
       background: rgba(255,255,255,0.01);
@@ -52,16 +65,19 @@
       position: relative;
       overflow: hidden;
     }
+
     .liquid-glass {
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
       box-shadow: inset 0 1px 1px rgba(255,255,255,0.10);
     }
+
     .liquid-glass-strong {
       backdrop-filter: blur(50px);
       -webkit-backdrop-filter: blur(50px);
       box-shadow: 4px 4px 4px rgba(0,0,0,0.05), inset 0 1px 1px rgba(255,255,255,0.15);
     }
+
     .liquid-glass::before,
     .liquid-glass-strong::before {
       content: "";
@@ -74,23 +90,29 @@
       -webkit-mask-composite: xor;
       mask-composite: exclude;
     }
+
     .liquid-glass::before {
-      background: linear-gradient(180deg,
+      background: linear-gradient(
+        180deg,
         rgba(255,255,255,0.45) 0%,
         rgba(255,255,255,0.15) 20%,
         rgba(255,255,255,0) 40%,
         rgba(255,255,255,0) 60%,
         rgba(255,255,255,0.15) 80%,
-        rgba(255,255,255,0.45) 100%);
+        rgba(255,255,255,0.45) 100%
+      );
     }
+
     .liquid-glass-strong::before {
-      background: linear-gradient(180deg,
+      background: linear-gradient(
+        180deg,
         rgba(255,255,255,0.50) 0%,
         rgba(255,255,255,0.20) 20%,
         rgba(255,255,255,0) 40%,
         rgba(255,255,255,0) 60%,
         rgba(255,255,255,0.20) 80%,
-        rgba(255,255,255,0.50) 100%);
+        rgba(255,255,255,0.50) 100%
+      );
     }
 
     .site-nav {
@@ -106,25 +128,19 @@
       background: transparent;
       transition: background 0.5s ease, backdrop-filter 0.5s ease;
     }
+
     .site-nav.scrolled {
       background: rgba(0,0,0,0.85);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
     }
-    .nav-logo {
+
+    .nav-spacer {
       width: 48px;
       height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 999px;
+      flex: 0 0 48px;
     }
-    .nav-logo span {
-      font-family: var(--font-heading);
-      font-size: 22px;
-      font-style: italic;
-      color: white;
-    }
+
     .nav-center {
       display: flex;
       align-items: center;
@@ -132,6 +148,7 @@
       padding: 6px;
       border-radius: 999px;
     }
+
     .nav-link {
       padding: 8px 14px;
       font-size: 14px;
@@ -139,7 +156,11 @@
       color: var(--white-80);
       transition: color 0.25s ease;
     }
-    .nav-link:hover { color: #fff; }
+
+    .nav-link:hover {
+      color: #fff;
+    }
+
     .nav-cta {
       margin-left: 4px;
       display: flex;
@@ -154,8 +175,10 @@
       white-space: nowrap;
       transition: background 0.25s ease;
     }
-    .nav-cta:hover { background: rgba(255,255,255,0.9); }
-    .nav-spacer { width: 48px; height: 48px; }
+
+    .nav-cta:hover {
+      background: rgba(255,255,255,0.9);
+    }
 
     .hero {
       position: relative;
@@ -166,6 +189,7 @@
       flex-direction: column;
       overflow: hidden;
     }
+
     .hero-video,
     .section-video {
       position: absolute;
@@ -174,6 +198,7 @@
       transition: opacity 0.5s linear;
       opacity: 0;
     }
+
     .hero-video {
       left: 50%;
       top: 0;
@@ -182,6 +207,7 @@
       height: 120%;
       object-position: top;
     }
+
     .video-fallback {
       position: absolute;
       inset: 0;
@@ -191,6 +217,7 @@
         radial-gradient(circle at 20% 80%, rgba(255,255,255,0.08), transparent 24rem),
         linear-gradient(180deg, #060606 0%, #000 60%, #000 100%);
     }
+
     .hero-inner {
       position: relative;
       z-index: 10;
@@ -198,6 +225,7 @@
       display: flex;
       flex-direction: column;
     }
+
     .hero-content {
       flex: 1;
       display: flex;
@@ -207,26 +235,7 @@
       padding: 100px 24px 0;
       text-align: center;
     }
-    .hero-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 32px;
-      border-radius: 999px;
-      padding: 6px 18px 6px 6px;
-    }
-    .hero-badge-main {
-      border-radius: 999px;
-      background: #fff;
-      color: #000;
-      padding: 4px 12px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .hero-badge-sub {
-      font-size: 13px;
-      color: var(--white-80);
-    }
+
     .hero-title {
       max-width: 850px;
       font-family: var(--font-heading);
@@ -244,20 +253,14 @@
       transform: translateY(20px);
       animation: fadeUp 0.7s ease-out 0.65s forwards;
     }
-    .hero-desc {
-      margin-top: 24px;
-      max-width: 560px;
-      color: var(--white-70);
-      font-size: 15px;
-      line-height: 1.7;
-      font-weight: 300;
-    }
+
     .hero-actions {
       display: flex;
       align-items: center;
       gap: 24px;
       margin-top: 36px;
     }
+
     .primary-action {
       display: flex;
       align-items: center;
@@ -269,7 +272,11 @@
       font-weight: 500;
       transition: opacity 0.25s ease;
     }
-    .primary-action:hover { opacity: 0.9; }
+
+    .primary-action:hover {
+      opacity: 0.9;
+    }
+
     .secondary-action {
       display: flex;
       align-items: center;
@@ -279,7 +286,11 @@
       font-weight: 300;
       transition: color 0.25s ease;
     }
-    .secondary-action:hover { color: white; }
+
+    .secondary-action:hover {
+      color: white;
+    }
+
     .hero-partners {
       display: flex;
       flex-direction: column;
@@ -287,17 +298,20 @@
       gap: 16px;
       padding-bottom: 40px;
     }
+
     .partner-caption {
       border-radius: 999px;
       padding: 4px 16px;
       font-size: 12px;
       color: var(--white-60);
     }
+
     .partner-row {
       display: flex;
       gap: 48px;
       align-items: center;
     }
+
     .partner-row span {
       font-family: var(--font-heading);
       font-style: italic;
@@ -306,13 +320,23 @@
       letter-spacing: -0.5px;
     }
 
-    .fade-up { opacity: 0; transform: translateY(20px); filter: blur(10px); animation: fadeUp 0.7s ease-out forwards; }
-    .d1 { animation-delay: 0.4s; }
-    .d2 { animation-delay: 0.65s; }
-    .d3 { animation-delay: 0.85s; }
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      filter: blur(10px);
+      animation: fadeUp 0.7s ease-out forwards;
+    }
+
     .d4 { animation-delay: 1.1s; }
     .d6 { animation-delay: 1.45s; }
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
 
     .marquee-wrap {
       overflow: hidden;
@@ -320,13 +344,18 @@
       border-bottom: 1px solid var(--white-07);
       padding: 16px 0;
     }
+
     .marquee-track {
       display: flex;
       width: max-content;
       white-space: nowrap;
       animation: marquee 30s linear infinite;
     }
-    .marquee-track.rev { animation-direction: reverse; }
+
+    .marquee-track.rev {
+      animation-direction: reverse;
+    }
+
     .marquee-item {
       display: inline-flex;
       align-items: center;
@@ -337,6 +366,7 @@
       color: var(--white-35);
       font-size: 20px;
     }
+
     .marquee-dot {
       width: 4px;
       height: 4px;
@@ -344,9 +374,17 @@
       background: var(--white-25);
       display: inline-block;
     }
-    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-    .section-pad { padding: 130px 48px; background: #000; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .section-pad {
+      padding: 130px 48px;
+      background: #000;
+    }
+
     .section-label {
       font-size: 11px;
       letter-spacing: 0.22em;
@@ -357,6 +395,7 @@
       align-items: center;
       gap: 14px;
     }
+
     .section-label::before {
       content: '';
       width: 28px;
@@ -364,33 +403,105 @@
       background: var(--white-25);
       display: inline-block;
     }
+
+    #about {
+      position: relative;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255,255,255,0.055), transparent 28rem),
+        radial-gradient(circle at 82% 72%, rgba(255,255,255,0.035), transparent 26rem),
+        #000;
+    }
+
     .about-grid {
       display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 90px;
-      align-items: start;
+      grid-template-columns: minmax(300px, 0.9fr) minmax(420px, 1.1fr);
+      gap: 56px;
+      align-items: stretch;
     }
+
+    .about-left-panel {
+      border-radius: 32px;
+      padding: 22px;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: rgba(255,255,255,0.012);
+    }
+
+    .about-photo-caption {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 2px 22px;
+      color: var(--white-35);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .about-photo-caption span:last-child {
+      color: var(--white-60);
+    }
+
+    .about-photo-card {
+      width: 100%;
+      aspect-ratio: 4 / 4.8;
+      margin-bottom: 26px;
+      border-radius: 28px;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255,255,255,0.02);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.35), inset 0 1px 1px rgba(255,255,255,0.12);
+    }
+
+    .about-photo-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), transparent 36%, rgba(0,0,0,0.25));
+      pointer-events: none;
+    }
+
+    .about-photo {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center top;
+      filter: saturate(0.92) contrast(1.04);
+    }
+
     .about-quote {
       font-family: var(--font-heading);
       font-style: italic;
       color: white;
-      font-size: clamp(30px,4vw,52px);
-      line-height: 1.22;
-      letter-spacing: -0.01em;
+      font-size: clamp(28px, 3.3vw, 46px);
+      line-height: 1.08;
+      letter-spacing: -0.025em;
+      margin: auto 0 0;
     }
-    .about-quote span { opacity: 0.45; }
+
+    .about-quote span {
+      opacity: 0.48;
+    }
+
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      margin-top: 48px;
+      margin-top: 28px;
       border-top: 1px solid var(--white-07);
       border-left: 1px solid var(--white-07);
+      border-radius: 18px;
+      overflow: hidden;
     }
+
     .stat-card {
-      padding: 28px 20px;
+      padding: 22px 18px;
+      background: rgba(255,255,255,0.012);
       border-right: 1px solid var(--white-07);
       border-bottom: 1px solid var(--white-07);
     }
+
     .stat-number {
       font-family: var(--font-heading);
       font-style: italic;
@@ -400,40 +511,89 @@
       display: block;
       margin-bottom: 6px;
     }
+
     .stat-label {
       font-size: 11px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--white-35);
     }
+
+    .about-text {
+      border-radius: 32px;
+      padding: clamp(28px, 4vw, 44px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.028), rgba(255,255,255,0.006));
+      border: 1px solid var(--white-07);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.08);
+    }
+
     .about-text p {
-      font-size: 14px;
-      line-height: 2;
+      font-size: 15px;
+      line-height: 1.9;
       color: var(--white-55);
       margin-bottom: 20px;
+      max-width: 72ch;
     }
+
+    .about-text p:first-child {
+      color: var(--white-70);
+      font-size: 16px;
+    }
+
+    .about-text p:last-of-type {
+      margin-bottom: 0;
+    }
+
     .skills-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       border-top: 1px solid var(--white-07);
-      margin-top: 8px;
+      margin-top: 32px;
     }
+
     .skill-item {
-      font-size: 12px;
+      font-size: 12.5px;
       letter-spacing: 0.05em;
       color: var(--white-45);
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 14px 0;
+      padding: 15px 0;
       border-bottom: 1px solid var(--white-07);
+      transition: color 0.25s ease;
     }
-    .skill-item:nth-child(odd) { border-right: 1px solid var(--white-07); padding-right: 20px; }
-    .skill-item:nth-child(even) { padding-left: 20px; }
-    .skill-item::before { content: '—'; color: var(--white-25); }
 
-    .research-section { min-height: 100vh; position: relative; background: #000; }
-    .section-video { inset: 0; width: 100%; height: 100%; z-index: 0; }
+    .skill-item:hover {
+      color: var(--white-80);
+    }
+
+    .skill-item:nth-child(odd) {
+      border-right: 1px solid var(--white-07);
+      padding-right: 20px;
+    }
+
+    .skill-item:nth-child(even) {
+      padding-left: 20px;
+    }
+
+    .skill-item::before {
+      content: '—';
+      color: var(--white-25);
+    }
+
+    .research-section {
+      min-height: 100vh;
+      position: relative;
+      background: #000;
+    }
+
+    .section-video {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
     .research-content {
       position: relative;
       z-index: 10;
@@ -442,7 +602,13 @@
       display: flex;
       flex-direction: column;
     }
-    .research-kicker { font-size: 14px; color: var(--white-50); margin-bottom: 24px; }
+
+    .research-kicker {
+      font-size: 14px;
+      color: var(--white-50);
+      margin-bottom: 24px;
+    }
+
     .research-heading {
       font-family: var(--font-heading);
       font-style: italic;
@@ -451,12 +617,14 @@
       line-height: 0.9;
       letter-spacing: -3px;
     }
+
     .research-cards {
       display: grid;
       grid-template-columns: repeat(4,1fr);
       gap: 20px;
       margin-top: 64px;
     }
+
     .research-card {
       min-height: 340px;
       padding: 24px;
@@ -464,7 +632,14 @@
       display: flex;
       flex-direction: column;
     }
-    .research-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+
+    .research-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
     .research-icon {
       width: 44px;
       height: 44px;
@@ -474,8 +649,21 @@
       align-items: center;
       justify-content: center;
     }
-    .research-icon svg { width: 22px; height: 22px; color: white; }
-    .research-tags { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; max-width: 68%; }
+
+    .research-icon svg {
+      width: 22px;
+      height: 22px;
+      color: white;
+    }
+
+    .research-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+      max-width: 68%;
+    }
+
     .research-tags span {
       border-radius: 999px;
       padding: 4px 10px;
@@ -483,7 +671,11 @@
       font-size: 11px;
       white-space: nowrap;
     }
-    .research-spacer { flex: 1; }
+
+    .research-spacer {
+      flex: 1;
+    }
+
     .research-card h3 {
       margin-top: 24px;
       font-family: var(--font-heading);
@@ -493,6 +685,7 @@
       line-height: 1;
       color: white;
     }
+
     .research-card p {
       margin-top: 12px;
       font-size: 13px;
@@ -506,6 +699,7 @@
       background: #000;
       border-top: 1px solid var(--white-07);
     }
+
     .section-head {
       display: flex;
       align-items: flex-end;
@@ -513,6 +707,7 @@
       gap: 32px;
       margin-bottom: 72px;
     }
+
     .large-title {
       font-family: var(--font-heading);
       font-style: italic;
@@ -521,7 +716,11 @@
       line-height: 1.05;
       letter-spacing: -0.02em;
     }
-    .large-title span { opacity: 0.4; }
+
+    .large-title span {
+      opacity: 0.4;
+    }
+
     .section-link {
       display: flex;
       align-items: center;
@@ -530,7 +729,11 @@
       font-size: 14px;
       transition: color 0.25s ease;
     }
-    .section-link:hover { color: white; }
+
+    .section-link:hover {
+      color: white;
+    }
+
     .paper-row {
       display: grid;
       grid-template-columns: 72px 0.8fr 1.2fr 200px;
@@ -541,8 +744,18 @@
       border-radius: 8px;
       transition: background 0.35s ease;
     }
-    .paper-row:hover { background: rgba(255,255,255,0.02); }
-    .paper-num-col { font-family: var(--font-heading); font-style: italic; color: var(--white-25); font-size: 14px; }
+
+    .paper-row:hover {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .paper-num-col {
+      font-family: var(--font-heading);
+      font-style: italic;
+      color: var(--white-25);
+      font-size: 14px;
+    }
+
     .paper-title {
       font-family: var(--font-heading);
       font-style: italic;
@@ -553,9 +766,27 @@
       margin-bottom: 10px;
       font-weight: 400;
     }
-    .paper-meta { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--white-35); }
-    .paper-abstract { font-size: 13px; line-height: 1.85; color: var(--white-45); }
-    .paper-tags-col { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+
+    .paper-meta {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--white-35);
+    }
+
+    .paper-abstract {
+      font-size: 13px;
+      line-height: 1.85;
+      color: var(--white-45);
+    }
+
+    .paper-tags-col {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
     .paper-tags-col span {
       border-radius: 999px;
       padding: 6px 12px;
@@ -571,7 +802,15 @@
       text-align: center;
       padding: 150px 48px 110px;
     }
-    .contact-pre { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white-35); margin-bottom: 28px; }
+
+    .contact-pre {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-35);
+      margin-bottom: 28px;
+    }
+
     .contact-title {
       font-family: var(--font-heading);
       font-style: italic;
@@ -581,11 +820,20 @@
       margin-bottom: 44px;
       font-weight: 400;
     }
-    .contact-title a { color: white; transition: color 0.25s ease; }
-    .contact-title a:hover { color: var(--white-80); }
-    .contact-title span { opacity: 0.45; }
-    .contact-desc { max-width: 560px; margin: 0 auto 52px; color: var(--white-50); font-size: 14px; line-height: 1.7; }
-    .contact-desc span { opacity: 0.65; }
+
+    .contact-title a {
+      color: white;
+      transition: color 0.25s ease;
+    }
+
+    .contact-title a:hover {
+      color: var(--white-80);
+    }
+
+    .contact-title span {
+      opacity: 0.45;
+    }
+
     .contact-grid {
       max-width: 960px;
       margin: 0 auto;
@@ -595,22 +843,39 @@
       border-left: 1px solid var(--white-07);
       text-align: left;
     }
+
     .contact-cell {
       border-right: 1px solid var(--white-07);
       border-bottom: 1px solid var(--white-07);
       padding: 26px 22px;
       display: block;
     }
-    a.contact-cell:hover { opacity: 0.8; }
-    .contact-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--white-35); margin-bottom: 14px; }
-    .contact-value { font-size: 13px; line-height: 1.7; color: var(--white-55); overflow-wrap: anywhere; }
+
+    a.contact-cell:hover {
+      opacity: 0.8;
+    }
+
+    .contact-label {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--white-35);
+      margin-bottom: 14px;
+    }
+
+    .contact-value {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--white-55);
+      overflow-wrap: anywhere;
+    }
 
     .footer-row {
       padding: 28px 48px;
       border-top: 1px solid var(--white-07);
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       gap: 16px;
       font-size: 11px;
       letter-spacing: 0.12em;
@@ -618,33 +883,110 @@
       color: var(--white-25);
     }
 
-    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.9s ease, transform 0.9s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    .icon-arrow { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .icon-arrow {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
 
     @media (max-width: 900px) {
-      .paper-row { grid-template-columns: 1fr; gap: 16px; }
-      .paper-num-col { display: none; }
-      .paper-tags-col { justify-content: flex-start; }
-      .about-grid { grid-template-columns: 1fr; gap: 60px; }
-      .stats-grid { grid-template-columns: repeat(2,1fr); }
-      .contact-grid { grid-template-columns: repeat(2,1fr); }
-      .research-cards { grid-template-columns: repeat(2,1fr); }
-      .hero-partners { display: none; }
+      .paper-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .paper-num-col {
+        display: none;
+      }
+
+      .paper-tags-col {
+        justify-content: flex-start;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .about-left-panel {
+        max-width: 520px;
+        margin: 0 auto;
+      }
+
+      .about-photo-card {
+        aspect-ratio: 4 / 4.7;
+      }
+
+      .contact-grid {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .research-cards {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .hero-partners {
+        display: none;
+      }
     }
+
     @media (max-width: 600px) {
-      .section-pad, .papers-section { padding: 80px 24px; }
-      .hero-content { padding: 0 24px 60px; }
-      .hero { min-height: 680px; }
-      .research-content { padding: 100px 24px 70px; }
-      .research-cards { grid-template-columns: 1fr; }
-      .contact-section { padding: 110px 24px 80px; }
-      .contact-grid { grid-template-columns: 1fr; }
-      .footer-row { flex-direction: column; text-align: center; }
-      .nav-center { display: none; }
+      .section-pad,
+      .papers-section {
+        padding: 80px 24px;
+      }
+
+      .hero-content {
+        padding: 0 24px 60px;
+      }
+
+      .hero {
+        min-height: 680px;
+      }
+
+      .research-content {
+        padding: 100px 24px 70px;
+      }
+
+      .research-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-section {
+        padding: 110px 24px 80px;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-row {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .nav-center {
+        display: none;
+      }
     }
   </style>
 </head>
+
 <body>
   <section id="top" class="hero">
     <div class="video-fallback" aria-hidden="true"></div>
@@ -653,23 +995,43 @@
     <div class="hero-inner">
       <nav class="site-nav" id="site-nav">
         <div class="nav-spacer" aria-hidden="true"></div>
+
         <div class="nav-center liquid-glass">
           <a class="nav-link" href="#about">About</a>
           <a class="nav-link" href="#research">Research</a>
           <a class="nav-link" href="#papers">Papers</a>
           <a class="nav-link" href="#contact">Contact</a>
-          <a class="nav-cta" href="#contact">Get in Touch <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg></a>
+          <a class="nav-cta" href="#contact">
+            Get in Touch
+            <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 17L17 7"></path>
+              <path d="M7 7h10v10"></path>
+            </svg>
+          </a>
         </div>
+
         <div class="nav-spacer"></div>
       </nav>
 
       <div class="hero-content">
-
         <h1 class="hero-title">Gary</h1>
 
         <div class="hero-actions fade-up d4">
-          <a href="#papers" class="primary-action liquid-glass-strong">View My Papers <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg></a>
-          <a href="#contact" class="secondary-action">Contact Me <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg></a>
+          <a href="#papers" class="primary-action liquid-glass-strong">
+            View My Papers
+            <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 17L17 7"></path>
+              <path d="M7 7h10v10"></path>
+            </svg>
+          </a>
+
+          <a href="#contact" class="secondary-action">
+            Contact Me
+            <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 17L17 7"></path>
+              <path d="M7 7h10v10"></path>
+            </svg>
+          </a>
         </div>
       </div>
 
@@ -701,12 +1063,36 @@
 
   <section id="about" class="section-pad">
     <p class="section-label reveal">About Me · 关于</p>
+
     <div class="about-grid">
-      <div class="reveal">
-        <p class="about-quote">Finding <span>order</span> within noise, and <span>resonance</span> across modalities.</p>
+      <div class="about-left-panel liquid-glass reveal">
+        <div class="about-photo-caption">
+          <span>Portrait</span>
+          <span>Gary</span>
+        </div>
+
+        <figure class="about-photo-card liquid-glass">
+          <img
+            class="about-photo"
+            src="https://raw.githubusercontent.com/SongYan888/songyan888.github.io/main/SongYan2.jpg"
+            alt="Portrait of Gary"
+            loading="lazy"
+          />
+        </figure>
+
+        <p class="about-quote">
+          Finding <span>order</span> within noise, and <span>resonance</span> across modalities.
+        </p>
+
         <div class="stats-grid">
-          <div class="stat-card"><span class="stat-number">6</span><span class="stat-label">Featured Papers</span></div>
-          <div class="stat-card"><span class="stat-number">4</span><span class="stat-label">Research Directions</span></div>
+          <div class="stat-card">
+            <span class="stat-number">6</span>
+            <span class="stat-label">Featured Papers</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">4</span>
+            <span class="stat-label">Research Directions</span>
+          </div>
         </div>
       </div>
 
@@ -742,8 +1128,15 @@
       <div class="research-cards">
         <article class="research-card liquid-glass reveal">
           <div class="research-card-top">
-            <div class="research-icon liquid-glass"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor" /></svg></div>
-            <div class="research-tags"><span class="liquid-glass">Generation</span><span class="liquid-glass">Sampling</span></div>
+            <div class="research-icon liquid-glass">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="research-tags">
+              <span class="liquid-glass">Generation</span>
+              <span class="liquid-glass">Sampling</span>
+            </div>
           </div>
           <div class="research-spacer"></div>
           <h3>Diffusion</h3>
@@ -752,8 +1145,17 @@
 
         <article class="research-card liquid-glass reveal">
           <div class="research-card-top">
-            <div class="research-icon liquid-glass"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 8H3V9h9v2zm0-4H3V5h9v2z" fill="currentColor" /></svg></div>
-            <div class="research-tags"><span class="liquid-glass">Text</span><span class="liquid-glass">Image</span><span class="liquid-glass">Video</span><span class="liquid-glass">3D</span></div>
+            <div class="research-icon liquid-glass">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 8H3V9h9v2zm0-4H3V5h9v2z" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="research-tags">
+              <span class="liquid-glass">Text</span>
+              <span class="liquid-glass">Image</span>
+              <span class="liquid-glass">Video</span>
+              <span class="liquid-glass">3D</span>
+            </div>
           </div>
           <div class="research-spacer"></div>
           <h3>MLLMs</h3>
@@ -762,8 +1164,15 @@
 
         <article class="research-card liquid-glass reveal">
           <div class="research-card-top">
-            <div class="research-icon liquid-glass"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z" fill="currentColor" /></svg></div>
-            <div class="research-tags"><span class="liquid-glass">Compression</span><span class="liquid-glass">Distillation</span></div>
+            <div class="research-icon liquid-glass">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="research-tags">
+              <span class="liquid-glass">Compression</span>
+              <span class="liquid-glass">Distillation</span>
+            </div>
           </div>
           <div class="research-spacer"></div>
           <h3>Efficiency</h3>
@@ -772,8 +1181,15 @@
 
         <article class="research-card liquid-glass reveal">
           <div class="research-card-top">
-            <div class="research-icon liquid-glass"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z" fill="currentColor" /></svg></div>
-            <div class="research-tags"><span class="liquid-glass">Creativity</span><span class="liquid-glass">Aesthetics</span></div>
+            <div class="research-icon liquid-glass">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="research-tags">
+              <span class="liquid-glass">Theory</span>
+              <span class="liquid-glass">Optimization</span>
+            </div>
           </div>
           <div class="research-spacer"></div>
           <h3>Machine Learning Theory</h3>
@@ -806,61 +1222,129 @@
         <p class="section-label reveal">Papers · 论文发表</p>
         <h2 class="large-title reveal">Selected<br /><span>Papers</span></h2>
       </div>
-      <a href="#contact" class="section-link">Discuss collaboration <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg></a>
+      <a href="#contact" class="section-link">
+        Discuss collaboration
+        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 17L17 7"></path>
+          <path d="M7 7h10v10"></path>
+        </svg>
+      </a>
     </div>
 
     <article class="paper-row reveal">
       <span class="paper-num-col">01 —</span>
-      <div><h3 class="paper-title">Beyond Randomness: Understand the Order of the Noise in Diffusion</h3><div class="paper-meta">2025.11 · Gary, et al. · Under Review</div></div>
+      <div>
+        <h3 class="paper-title">Beyond Randomness: Understand the Order of the Noise in Diffusion</h3>
+        <div class="paper-meta">2025.11 · Gary, et al. · Under Review</div>
+      </div>
       <p class="paper-abstract">Challenges the conventional view that initial noise in diffusion generation is merely random — reveals analyzable semantic patterns and proposes a training-free Semantic Erasure-Injection process.</p>
-      <div class="paper-tags-col"><span class="liquid-glass">Diffusion</span><span class="liquid-glass">Noise Optimization</span><span class="liquid-glass">Training-free</span></div>
+      <div class="paper-tags-col">
+        <span class="liquid-glass">Diffusion</span>
+        <span class="liquid-glass">Noise Optimization</span>
+        <span class="liquid-glass">Training-free</span>
+      </div>
     </article>
 
     <article class="paper-row reveal">
       <span class="paper-num-col">02 —</span>
-      <div><h3 class="paper-title">Break Stylistic Sophon: Are We Really Meant to Confine the Imagination in Style Transfer?</h3><div class="paper-meta">2025.05 · Gary, et al. · Under Review</div></div>
+      <div>
+        <h3 class="paper-title">Break Stylistic Sophon: Are We Really Meant to Confine the Imagination in Style Transfer?</h3>
+        <div class="paper-meta">2025.05 · Gary, et al. · Under Review</div>
+      </div>
       <p class="paper-abstract">Introduces StyleWallfacer — a unified framework for high-quality style transfer addressing semantic drift, overfitting, and color limitation through triple diffusion and semantic style injection.</p>
-      <div class="paper-tags-col"><span class="liquid-glass">AI Art</span><span class="liquid-glass">Style Transfer</span><span class="liquid-glass">Diffusion</span></div>
+      <div class="paper-tags-col">
+        <span class="liquid-glass">AI Art</span>
+        <span class="liquid-glass">Style Transfer</span>
+        <span class="liquid-glass">Diffusion</span>
+      </div>
     </article>
 
     <article class="paper-row reveal">
       <span class="paper-num-col">03 —</span>
-      <div><h3 class="paper-title">SHSRD: Efficient Conditional Diffusion Model for Single Hyperspectral Image Superresolution</h3><div class="paper-meta">2025.03 · Gary, et al. · JSTARS 2025</div></div>
+      <div>
+        <h3 class="paper-title">SHSRD: Efficient Conditional Diffusion Model for Single Hyperspectral Image Superresolution</h3>
+        <div class="paper-meta">2025.03 · Gary, et al. · JSTARS 2025</div>
+      </div>
       <p class="paper-abstract">Proposes SHSRD — an efficient conditional diffusion framework for hyperspectral image superresolution using spectral information injection and two-stage transfer learning on small HSI datasets.</p>
-      <div class="paper-tags-col"><span class="liquid-glass">Diffusion</span><span class="liquid-glass">HSI</span><span class="liquid-glass">Low-Level Vision</span></div>
+      <div class="paper-tags-col">
+        <span class="liquid-glass">Diffusion</span>
+        <span class="liquid-glass">HSI</span>
+        <span class="liquid-glass">Low-Level Vision</span>
+      </div>
     </article>
 
     <article class="paper-row reveal">
       <span class="paper-num-col">04 —</span>
-      <div><h3 class="paper-title">Reusing Source Diffusion Model for Domain Perception: Towards Few-shot Image Generation via Fine-tuning</h3><div class="paper-meta">2025 · Gary, et al. · Expert Systems with Applications, 130797</div></div>
+      <div>
+        <h3 class="paper-title">Reusing Source Diffusion Model for Domain Perception: Towards Few-shot Image Generation via Fine-tuning</h3>
+        <div class="paper-meta">2025 · Gary, et al. · Expert Systems with Applications, 130797</div>
+      </div>
       <p class="paper-abstract">Studies how a source diffusion model can be reused for domain perception and adapted through fine-tuning, aiming to improve few-shot image generation under limited target-domain data.</p>
-      <div class="paper-tags-col"><span class="liquid-glass">Diffusion</span><span class="liquid-glass">Few-shot Generation</span><span class="liquid-glass">Domain Adaptation</span></div>
+      <div class="paper-tags-col">
+        <span class="liquid-glass">Diffusion</span>
+        <span class="liquid-glass">Few-shot Generation</span>
+        <span class="liquid-glass">Domain Adaptation</span>
+      </div>
     </article>
 
     <article class="paper-row reveal">
       <span class="paper-num-col">05 —</span>
-      <div><h3 class="paper-title">Using Dynamic Knowledge for Kernel Modulation: Towards Image Generation via One-shot Multi-domain Adaptation</h3><div class="paper-meta">2025 · Gary, et al. · Pattern Recognition, 112489</div></div>
+      <div>
+        <h3 class="paper-title">Using Dynamic Knowledge for Kernel Modulation: Towards Image Generation via One-shot Multi-domain Adaptation</h3>
+        <div class="paper-meta">2025 · Gary, et al. · Pattern Recognition, 112489</div>
+      </div>
       <p class="paper-abstract">Explores dynamic knowledge for kernel modulation in one-shot multi-domain adaptation, targeting image generation when only extremely limited domain-specific supervision is available.</p>
-      <div class="paper-tags-col"><span class="liquid-glass">Image Generation</span><span class="liquid-glass">One-shot Adaptation</span><span class="liquid-glass">Kernel Modulation</span></div>
+      <div class="paper-tags-col">
+        <span class="liquid-glass">Image Generation</span>
+        <span class="liquid-glass">One-shot Adaptation</span>
+        <span class="liquid-glass">Kernel Modulation</span>
+      </div>
     </article>
 
     <article class="paper-row reveal">
       <span class="paper-num-col">06 —</span>
-      <div><h3 class="paper-title">Dual Objectives in Few-Shot Domain Adaptation: Image Restoration and Cross-Domain Alignment</h3><div class="paper-meta">2025 · Gary, et al. · Expert Systems with Applications, 130759</div></div>
+      <div>
+        <h3 class="paper-title">Dual Objectives in Few-Shot Domain Adaptation: Image Restoration and Cross-Domain Alignment</h3>
+        <div class="paper-meta">2025 · Gary, et al. · Expert Systems with Applications, 130759</div>
+      </div>
       <p class="paper-abstract">Formulates few-shot domain adaptation with dual objectives, jointly considering image restoration quality and cross-domain alignment to improve transfer under scarce target-domain examples.</p>
-      <div class="paper-tags-col"><span class="liquid-glass">Few-shot Adaptation</span><span class="liquid-glass">Image Restoration</span><span class="liquid-glass">Cross-domain Alignment</span></div>
+      <div class="paper-tags-col">
+        <span class="liquid-glass">Few-shot Adaptation</span>
+        <span class="liquid-glass">Image Restoration</span>
+        <span class="liquid-glass">Cross-domain Alignment</span>
+      </div>
     </article>
   </section>
 
   <section id="contact" class="contact-section">
     <p class="contact-pre reveal">Contact Me · 建立连接</p>
-    <h2 class="contact-title reveal"><a href="mailto:Gary_144@mail.ustc.edu.cn">Gary_144<span>@mail</span><br />ustc.edu.cn</a></h2>
+
+    <h2 class="contact-title reveal">
+      <a href="mailto:Gary_144@mail.ustc.edu.cn">
+        Gary_144<span>@mail</span><br />ustc.edu.cn
+      </a>
+    </h2>
 
     <div class="contact-grid reveal">
-      <a class="contact-cell liquid-glass" href="mailto:Gary_144@mail.ustc.edu.cn"><div class="contact-label">Email 邮箱</div><div class="contact-value">Gary_144@mail.ustc.edu.cn</div></a>
-      <a class="contact-cell liquid-glass" href="https://songyan888.github.io/" target="_blank" rel="noopener noreferrer"><div class="contact-label">GitHub / Homepage</div><div class="contact-value">songyan888.github.io</div></a>
-      <a class="contact-cell liquid-glass" href="https://scholar.google.com/citations?user=eCL463UAAAAJ" target="_blank" rel="noopener noreferrer"><div class="contact-label">Google Scholar</div><div class="contact-value">Publications profile</div></a>
-      <div class="contact-cell liquid-glass"><div class="contact-label">RedNote 小红书</div><div class="contact-value">Gary</div></div>
+      <a class="contact-cell liquid-glass" href="mailto:Gary_144@mail.ustc.edu.cn">
+        <div class="contact-label">Email 邮箱</div>
+        <div class="contact-value">Gary_144@mail.ustc.edu.cn</div>
+      </a>
+
+      <a class="contact-cell liquid-glass" href="https://songyan888.github.io/" target="_blank" rel="noopener noreferrer">
+        <div class="contact-label">GitHub / Homepage</div>
+        <div class="contact-value">songyan888.github.io</div>
+      </a>
+
+      <a class="contact-cell liquid-glass" href="https://scholar.google.com/citations?user=eCL463UAAAAJ" target="_blank" rel="noopener noreferrer">
+        <div class="contact-label">Google Scholar</div>
+        <div class="contact-value">Publications profile</div>
+      </a>
+
+      <div class="contact-cell liquid-glass">
+        <div class="contact-label">RedNote 小红书</div>
+        <div class="contact-value">Gary</div>
+      </div>
     </div>
   </section>
 
@@ -878,29 +1362,36 @@
       function setupFadingVideo(video) {
         let rafId = null;
         let fadingOut = false;
+
         function fadeTo(target) {
           if (rafId) cancelAnimationFrame(rafId);
           const start = parseFloat(video.style.opacity) || 0;
           const t0 = performance.now();
+
           function step(now) {
             const p = Math.min((now - t0) / FADE_MS, 1);
             video.style.opacity = String(start + (target - start) * p);
             if (p < 1) rafId = requestAnimationFrame(step);
           }
+
           rafId = requestAnimationFrame(step);
         }
+
         video.style.opacity = '0';
+
         video.addEventListener('loadeddata', function () {
           video.style.opacity = '0';
           video.play().catch(function () {});
           fadeTo(1);
         });
+
         video.addEventListener('timeupdate', function () {
           if (!fadingOut && video.duration && (video.duration - video.currentTime) <= FADE_OUT_LEAD && (video.duration - video.currentTime) > 0) {
             fadingOut = true;
             fadeTo(0);
           }
         });
+
         video.addEventListener('ended', function () {
           video.style.opacity = '0';
           setTimeout(function () {
@@ -910,16 +1401,20 @@
             fadeTo(1);
           }, 100);
         });
+
         video.addEventListener('error', function () {
           video.style.display = 'none';
         });
       }
+
       document.querySelectorAll('.js-fading-video').forEach(setupFadingVideo);
 
       const nav = document.getElementById('site-nav');
+
       function onScroll() {
         if (nav) nav.classList.toggle('scrolled', window.scrollY > 60);
       }
+
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
 
@@ -931,7 +1426,10 @@
           }
         });
       }, { threshold: 0.12 });
-      document.querySelectorAll('.reveal').forEach(function (el) { observer.observe(el); });
+
+      document.querySelectorAll('.reveal').forEach(function (el) {
+        observer.observe(el);
+      });
 
       document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
         anchor.addEventListener('click', function (event) {
@@ -946,12 +1444,11 @@
       console.assert(!document.querySelector('script[src*="cdn.tailwindcss.com"]'), 'Tailwind CDN script should not be present in production HTML.');
       console.assert(!document.querySelector('script[type="text/babel"]'), 'Babel standalone should not be present in production HTML.');
       console.assert(!document.querySelector('script[src*="react.development"]'), 'React development build should not be present in production HTML.');
-      console.assert(['#about', '#research', '#papers', '#contact'].every(function (selector) { return Boolean(document.querySelector(selector)); }), 'All navigation target sections must exist.');
-      console.assert(document.querySelectorAll('.research-card').length === 4, 'Expected four research direction cards.');
       console.assert(document.querySelectorAll('.paper-row').length === 6, 'Expected six paper rows.');
+      console.assert(document.querySelectorAll('.research-card').length === 4, 'Expected four research cards.');
       console.assert(document.querySelector('.hero-title').textContent.trim() === 'Gary', 'Hero title should be Gary.');
-      console.assert(getComputedStyle(document.querySelector('.hero-title')).fontFamily.includes('Instrument'), 'Hero title should use Instrument Serif.');
-      console.assert(!document.querySelector('.hero-stats'), 'Hero statistics block should be removed.');
+      console.assert(document.querySelectorAll('.stat-card').length === 2, 'Second page should only keep two stat cards.');
+      console.assert(document.querySelector('.about-photo'), 'About portrait should exist.');
     })();
   </script>
 </body>
