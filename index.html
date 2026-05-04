@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Gary — Diffusion Models & Multimodal Large Models Research" />
+  <meta name="description" content="Gary — Diffusion Models & Multimodal Large Language Models Research" />
   <title>Gary — Diffusion & MLLMs</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1146,7 +1146,7 @@
 
         <div class="stats-grid">
           <div class="stat-card">
-            <span class="stat-number">6</span>
+            <span class="stat-number">7</span>
             <span class="stat-label">Featured Papers</span>
           </div>
           <div class="stat-card">
@@ -1157,9 +1157,9 @@
       </div>
 
       <div class="about-text reveal">
-        <p>I am <strong>Gary</strong>, a PhD at USTC focusing on <strong>diffusion models</strong> and <strong>multimodal large language models</strong>.</p>
+        <p>I am <strong>Gary</strong>, a PhD at USTC focusing on <strong>diffusion models</strong> and <strong>multimodal large models</strong>.</p>
         <p>My research explores the boundaries of generative AI — turning <strong>noise into art</strong> and enabling text, images, video, and 3D to flow freely across modalities. I believe AI is <strong>an extension of creativity</strong>.</p>
-        <p>我是 <strong>Gary</strong>，一名专注于 <strong>扩散模型</strong> 和 <strong>多模态语言大模型</strong> 研究的 PhD。致力于探索生成式 AI 的边界，将噪声转化为艺术，让文本、图像、视频、3D 在不同模态间自由流转。</p>
+        <p>我是 <strong>Gary</strong>，一名专注于 <strong>扩散模型</strong> 和 <strong>多模态大模型</strong> 研究的 PhD。致力于探索生成式 AI 的边界，将噪声转化为艺术，让文本、图像、视频、3D 在不同模态间自由流转。</p>
 
         <div class="about-meta">
           <div class="about-meta-row">
@@ -1303,12 +1303,11 @@
       <span class="marquee-item">Training-free <i class="marquee-dot"></i></span>
       <span class="marquee-item">Style Transfer <i class="marquee-dot"></i></span>
       <span class="marquee-item">Hyperspectral SR <i class="marquee-dot"></i></span>
-      <span class="marquee-item">USTC <i class="marquee-dot"></i></span>
-      <span class="marquee-item">JSTARS 2025 <i class="marquee-dot"></i></span>
-      <span class="marquee-item">Under Review <i class="marquee-dot"></i></span>
-      <span class="marquee-item">Training-free <i class="marquee-dot"></i></span>
-      <span class="marquee-item">Style Transfer <i class="marquee-dot"></i></span>
-      <span class="marquee-item">Hyperspectral SR <i class="marquee-dot"></i></span>
+      <span class="marquee-item">ICML 2026 <i class="marquee-dot"></i></span>
+      <span class="marquee-item">Generative Replay <i class="marquee-dot"></i></span>
+      <span class="marquee-item">Class-Incremental Learning <i class="marquee-dot"></i></span>
+      <span class="marquee-item">DREAM <i class="marquee-dot"></i></span>
+      <span class="marquee-item">Domain Shortcut <i class="marquee-dot"></i></span>
     </div>
   </div>
 
@@ -1408,6 +1407,20 @@
         <span class="liquid-glass">Few-shot Adaptation</span>
         <span class="liquid-glass">Image Restoration</span>
         <span class="liquid-glass">Cross-domain Alignment</span>
+      </div>
+    </article>
+
+    <article class="paper-row reveal">
+      <span class="paper-num-col">07 —</span>
+      <div>
+        <h3 class="paper-title">Breaking the Synthetic-Real Domain Shortcut for Training-Free Generative Replay-based Class Incremental Learning</h3>
+        <div class="paper-meta">2026.05 · Gary, et al. · ICML 2026 Regular</div>
+      </div>
+      <p class="paper-abstract">Proposes DREAM, a training-free generative replay framework for class-incremental learning. It addresses the synthetic-real domain shortcut by using subspace rectification, orthogonal projection, and real-anchored prototype regularization to improve exemplar-free continual learning.</p>
+      <div class="paper-tags-col">
+        <span class="liquid-glass">ICML 2026</span>
+        <span class="liquid-glass">Class-Incremental Learning</span>
+        <span class="liquid-glass">Generative Replay</span>
       </div>
     </article>
   </section>
@@ -1540,7 +1553,7 @@
       console.assert(!document.querySelector('script[src*="cdn.tailwindcss.com"]'), 'Tailwind CDN script should not be present in production HTML.');
       console.assert(!document.querySelector('script[type="text/babel"]'), 'Babel standalone should not be present in production HTML.');
       console.assert(!document.querySelector('script[src*="react.development"]'), 'React development build should not be present in production HTML.');
-      console.assert(document.querySelectorAll('.paper-row').length === 6, 'Expected six paper rows.');
+      console.assert(document.querySelectorAll('.paper-row').length === 7, 'Expected seven paper rows.');
       console.assert(document.querySelectorAll('.research-card').length === 4, 'Expected four research cards.');
       console.assert(document.querySelector('.hero-title').textContent.trim() === 'Gary', 'Hero title should be Gary.');
       console.assert(document.querySelectorAll('.stat-card').length === 2, 'Second page should only keep two stat cards.');
