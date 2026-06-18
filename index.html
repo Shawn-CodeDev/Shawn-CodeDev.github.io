@@ -824,6 +824,21 @@
       color: var(--white-35);
     }
 
+    .paper-authors {
+      margin-top: 8px;
+      font-size: 11px;
+      line-height: 1.55;
+      color: var(--white-35);
+    }
+
+    .paper-title a {
+      transition: color 0.25s ease;
+    }
+
+    .paper-title a:hover {
+      color: var(--white-70);
+    }
+
     .paper-abstract {
       font-size: 13px;
       line-height: 1.85;
@@ -1146,7 +1161,7 @@
 
         <div class="stats-grid">
           <div class="stat-card">
-            <span class="stat-number">7</span>
+            <span class="stat-number">9</span>
             <span class="stat-label">Featured Papers</span>
           </div>
           <div class="stat-card">
@@ -1329,6 +1344,40 @@
     <article class="paper-row reveal">
       <span class="paper-num-col">01 —</span>
       <div>
+        <h3 class="paper-title">
+          <a href="https://www.preprints.org/manuscript/202606.0870/v1" target="_blank" rel="noopener noreferrer">Consistency in Diffusion-Based Visual Generation: A Survey</a>
+        </h3>
+        <div class="paper-meta">2026.06.11 · Preprints</div>
+        <div class="paper-authors">Song Yan, Wei Zhai, Chenfeng Wang, Ruixuan Li, Zhangping Yang, Yancheng Cai, Tao Zhang, Ling Wang, Yunwei Lan, Yujie He, Yang Cao, Min Li, Zheng-Jun Zha</div>
+      </div>
+      <p class="paper-abstract">Organizes consistency in diffusion-based visual generation as three agreement relations—external, internal, and normative—and reviews representative methods, evaluation protocols, cross-category trade-offs, and open problems across image, video, and 3D generation.</p>
+      <div class="paper-tags-col">
+        <span class="liquid-glass">Survey</span>
+        <span class="liquid-glass">Diffusion Models</span>
+        <span class="liquid-glass">Consistency</span>
+      </div>
+    </article>
+
+    <article class="paper-row reveal">
+      <span class="paper-num-col">02 —</span>
+      <div>
+        <h3 class="paper-title">
+          <a href="https://arxiv.org/abs/2605.12163" target="_blank" rel="noopener noreferrer">Self-Consistent Latent Reasoning: Long Latent Sequence Reasoning for Vision-Language Model</a>
+        </h3>
+        <div class="paper-meta">2026.05.12 · arXiv:2605.12163</div>
+        <div class="paper-authors">Chenfeng Wang, Wei He, Xuhan Zhu, Chunpeng Zhou, Qizhen Li, Song Yan, Yufei Zheng, Chengjun Yu, Fan Lu, Wei Zhai, Yang Cao, Pengfei Yu, Zheng-Jun Zha</div>
+      </div>
+      <p class="paper-abstract">Identifies information-gain collapse as a key obstacle to long latent visual reasoning and proposes SCOLAR, which generates auxiliary visual tokens from full-sequence hidden states while independently anchoring them to the original visual space. With staged supervised fine-tuning and ALPO reinforcement learning, it improves long-sequence latent reasoning, real-world benchmark performance, and out-of-distribution generalization.</p>
+      <div class="paper-tags-col">
+        <span class="liquid-glass">Vision-Language Model</span>
+        <span class="liquid-glass">Latent Reasoning</span>
+        <span class="liquid-glass">SCOLAR</span>
+      </div>
+    </article>
+
+    <article class="paper-row reveal">
+      <span class="paper-num-col">03 —</span>
+      <div>
         <h3 class="paper-title">Beyond Randomness: Understand the Order of the Noise in Diffusion</h3>
         <div class="paper-meta">2025.11 · Song Yan, et al. · Under Review</div>
       </div>
@@ -1341,7 +1390,7 @@
     </article>
 
     <article class="paper-row reveal">
-      <span class="paper-num-col">02 —</span>
+      <span class="paper-num-col">04 —</span>
       <div>
         <h3 class="paper-title">Break Stylistic Sophon: Are We Really Meant to Confine the Imagination in Style Transfer?</h3>
         <div class="paper-meta">2025.05 · Song Yan, et al. · Under Review</div>
@@ -1355,7 +1404,7 @@
     </article>
 
     <article class="paper-row reveal">
-      <span class="paper-num-col">03 —</span>
+      <span class="paper-num-col">05 —</span>
       <div>
         <h3 class="paper-title">SHSRD: Efficient Conditional Diffusion Model for Single Hyperspectral Image Superresolution</h3>
         <div class="paper-meta">2025.03 · Song Yan, et al. · JSTARS 2025</div>
@@ -1369,7 +1418,7 @@
     </article>
 
     <article class="paper-row reveal">
-      <span class="paper-num-col">04 —</span>
+      <span class="paper-num-col">06 —</span>
       <div>
         <h3 class="paper-title">Reusing Source Diffusion Model for Domain Perception: Towards Few-shot Image Generation via Fine-tuning</h3>
         <div class="paper-meta">2025 · Song Yan, et al. · Expert Systems with Applications, 130797</div>
@@ -1383,7 +1432,7 @@
     </article>
 
     <article class="paper-row reveal">
-      <span class="paper-num-col">05 —</span>
+      <span class="paper-num-col">07 —</span>
       <div>
         <h3 class="paper-title">Using Dynamic Knowledge for Kernel Modulation: Towards Image Generation via One-shot Multi-domain Adaptation</h3>
         <div class="paper-meta">2025 · Song Yan, et al. · Pattern Recognition, 112489</div>
@@ -1397,7 +1446,7 @@
     </article>
 
     <article class="paper-row reveal">
-      <span class="paper-num-col">06 —</span>
+      <span class="paper-num-col">08 —</span>
       <div>
         <h3 class="paper-title">Dual Objectives in Few-Shot Domain Adaptation: Image Restoration and Cross-Domain Alignment</h3>
         <div class="paper-meta">2025 · Song Yan, et al. · Expert Systems with Applications, 130759</div>
@@ -1411,7 +1460,7 @@
     </article>
 
     <article class="paper-row reveal">
-      <span class="paper-num-col">07 —</span>
+      <span class="paper-num-col">09 —</span>
       <div>
         <h3 class="paper-title">Breaking the Synthetic-Real Domain Shortcut for Training-Free Generative Replay-based Class Incremental Learning</h3>
         <div class="paper-meta">2026.05 · Song Yan, et al. · ICML 2026 Regular</div>
@@ -1550,7 +1599,7 @@
       console.assert(!document.querySelector('script[src*="cdn.tailwindcss.com"]'), 'Tailwind CDN script should not be present in production HTML.');
       console.assert(!document.querySelector('script[type="text/babel"]'), 'Babel standalone should not be present in production HTML.');
       console.assert(!document.querySelector('script[src*="react.development"]'), 'React development build should not be present in production HTML.');
-      console.assert(document.querySelectorAll('.paper-row').length === 7, 'Expected seven paper rows.');
+      console.assert(document.querySelectorAll('.paper-row').length === 9, 'Expected nine paper rows.');
       console.assert(document.querySelectorAll('.research-card').length === 4, 'Expected four research cards.');
       console.assert(document.querySelector('.hero-title').textContent.trim() === 'Song Yan', 'Hero title should be Song Yan.');
       console.assert(document.querySelectorAll('.stat-card').length === 2, 'Second page should only keep two stat cards.');
